@@ -1,9 +1,12 @@
 package com.tonsilitis.assignment;
 
-public class Control {
+public class Control 
+{
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void main(String[] args) 
+	{
+		GUI gui1 = new GUI("Tonsilitis Program");
+		System.out.println(gui1);
 
 	}
 
