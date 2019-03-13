@@ -15,7 +15,7 @@ public class Files
 		// set the data set
 		dataSet = new File(filename);
 		
-		// read file
+		// read files
 		try 
 		{
 			myScanner = new Scanner(dataSet);
