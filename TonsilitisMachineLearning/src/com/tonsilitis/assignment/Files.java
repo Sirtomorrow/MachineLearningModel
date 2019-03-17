@@ -7,27 +7,42 @@ import java.util.Scanner;
 public class Files 
 {
 	private File dataSet;
-	private Scanner myScanner;
-	private String filename = "example.txt";
-	
+	private Scanner fileScanner;
+	private String tempResult, achesResult, soreThroatResult, tonsilitisResult;
+	private String data_instance;
+	private int i = -1;
+
 	public Files()
 	{
-		// set the data set
-		dataSet = new File(filename);
 		
-		// read files
+		// check the file
 		try 
 		{
-			myScanner = new Scanner(dataSet);
+			dataSet = new File("datainput.csv");
+			fileScanner = new Scanner(dataSet);
 			
-			//read while there is a next line
-			while (myScanner.hasNextLine())
-			{
-				// read word after delimiter
-				String token = myScanner.next();
-				System.out.println(token);
+			// change delimiter
+			fileScanner.useDelimiter(",|\\n|\\s");
+			
+			fileScanner.nextLine();
+			
+			// while the file still has a next word
+			while(fileScanner.hasNextLine())
+			{	
+				i++;
+				tempResult = fileScanner.next();
+				achesResult = fileScanner.next();
+				soreThroatResult = fileScanner.next();
+				tonsilitisResult = fileScanner.next();
+				data_instance = nameDataInstance(i);
+				
+				// create data instance
+				Data data_instance = new Data(tempResult, achesResult, soreThroatResult, tonsilitisResult);
+				
+				System.out.println(data_instance.toString());
 			}
 			
+
 		}
 		// handling for file, i.e. if file not found
 		catch (FileNotFoundException event) 
@@ -36,13 +51,18 @@ public class Files
 			System.out.println("File not found");
 		}
 		
+		System.out.println(tempResult);
+		System.out.println(achesResult);
+		System.out.println(soreThroatResult);
+		System.out.println(tonsilitisResult);
+		
+		fileScanner.close();
 	}
 	
-	
-	// close file
-	public void closeFile()
+	public String nameDataInstance(int instance_num)
 	{
-		myScanner.close();
-		System.out.println("File is closed");
+		String name = "data"+i;
+		
+		return name;
 	}
 }
