@@ -8,9 +8,9 @@ public class Files
 {
 	private File dataSet;
 	private Scanner fileScanner;
-	private String tempResult, achesResult, soreThroatResult, tonsilitisResult;
+	private String tempToken, achesToken, soreThroatToken, tonsilitisToken;
 	private String data_instance;
-	private int i = -1;
+	private int i = 0;
 
 	public Files()
 	{
@@ -22,26 +22,10 @@ public class Files
 			fileScanner = new Scanner(dataSet);
 			
 			// change delimiter
-			fileScanner.useDelimiter(",|\\n|\\s");
+			fileScanner.useDelimiter(",|\r\n");
 			
+			// skip the first line 
 			fileScanner.nextLine();
-			
-			// while the file still has a next word
-			while(fileScanner.hasNextLine())
-			{	
-				i++;
-				tempResult = fileScanner.next();
-				achesResult = fileScanner.next();
-				soreThroatResult = fileScanner.next();
-				tonsilitisResult = fileScanner.next();
-				data_instance = nameDataInstance(i);
-				
-				// create data instance
-				Data data_instance = new Data(tempResult, achesResult, soreThroatResult, tonsilitisResult);
-				
-				System.out.println(data_instance.toString());
-			}
-			
 
 		}
 		// handling for file, i.e. if file not found
@@ -51,10 +35,21 @@ public class Files
 			System.out.println("File not found");
 		}
 		
-		System.out.println(tempResult);
-		System.out.println(achesResult);
-		System.out.println(soreThroatResult);
-		System.out.println(tonsilitisResult);
+		// while the file still has a next word
+		while(fileScanner.hasNext())
+		{	
+			i++;
+			tempToken = fileScanner.next();
+			achesToken = fileScanner.next();
+			soreThroatToken = fileScanner.next();
+			tonsilitisToken = fileScanner.next();
+			data_instance = nameDataInstance(i);
+			
+			// create data instance
+			Data data_instance = new Data(tempToken, achesToken, soreThroatToken, tonsilitisToken);
+			
+			System.out.println(data_instance.toString());
+		}
 		
 		fileScanner.close();
 	}
