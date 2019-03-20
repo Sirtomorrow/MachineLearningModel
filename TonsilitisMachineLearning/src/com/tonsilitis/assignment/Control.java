@@ -5,12 +5,14 @@ public class Control
 
 	public static void main(String[] args) 
 	{
-		FileProcessor myFile = new FileProcessor();
-		System.out.println(myFile);
+		/* FileProcessor fp = new FileProcessor();
+		fp.readFile();
+	
+		GUI gui1 = new GUI();
+		System.out.println(gui1); */ 
 		
-		/* GUI gui1 = new GUI();
-		System.out.println(gui1);*/
-		
+		NaiveBayes nb = new NaiveBayes();
+		System.out.println(nb);
 	}
 
 }

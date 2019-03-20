@@ -18,6 +18,7 @@ public class GUI extends JFrame implements ActionListener
 	private JPanel panel1, panel2, panel3, panel4;
 	private JButton submit_button;
 	private String[] optionString = { "No", "Yes" };
+	private String[] temperatureString = { "hot", "cool", "normal" };
 	
 	public GUI()
 	{
@@ -30,7 +31,7 @@ public class GUI extends JFrame implements ActionListener
 		label3 = new JLabel("Aches: ");
 		
 		// instantiate combo boxes
-		temp_box = new JComboBox(optionString);
+		temp_box = new JComboBox(temperatureString);
 		aches_box = new JComboBox(optionString);
 		soreThroat_box = new JComboBox(optionString);
 		

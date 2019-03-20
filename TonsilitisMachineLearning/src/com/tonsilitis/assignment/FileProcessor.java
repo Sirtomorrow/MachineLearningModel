@@ -8,12 +8,14 @@ public class FileProcessor
 {
 	private File dataSet;
 	private Scanner fileScanner;
-	private String tempToken, achesToken, soreThroatToken, tonsilitisToken;
-	private String data_instance;
-	private int i = 0;
+	private String temperatureToken, achesToken, soreThroatToken, tonsilitisToken, dataInstance;
+	private int dataAmount;
+	private int i;
 
-	public FileProcessor()
+	// read the file entered in
+	public void readFile()
 	{
+		i = 0;
 		
 		// check the file
 		try 
@@ -39,35 +41,57 @@ public class FileProcessor
 		while(fileScanner.hasNext())
 		{	
 			i++;
-			tempToken = fileScanner.next();
+			temperatureToken = fileScanner.next();
 			achesToken = fileScanner.next();
 			soreThroatToken = fileScanner.next();
 			tonsilitisToken = fileScanner.next();
-			setData_instance(nameDataInstance(i));
+			
+			// set the data instance of the given data
+			setDataInstance(nameDataInstance(i));
 			
 			// create data instance
-			Data data_instance = new Data(tempToken, achesToken, soreThroatToken, tonsilitisToken);
+			Data data_instance = new Data(temperatureToken, achesToken, soreThroatToken, tonsilitisToken);
 			System.out.println("Data "+i+" has been entered in");
 			System.out.println(data_instance.toString());
 		}
 		
+		// set the amount of data inputted
+		setDataAmount(i);
+		
+		// close file
 		fileScanner.close();
 	}
 	
+	// create data instance for whole data
 	public String nameDataInstance(int instance_num)
 	{
+		// name data based on the count
 		String name = "data"+i;
 		
 		return name;
 	}
 
-	public String getData_instance() 
+	// setters & getters for data instances
+	public String getDataInstance() 
 	{
-		return data_instance;
+		return dataInstance;
+	}
+	
+	public void setDataInstance(String data_instance) 
+	{
+		this.dataInstance = data_instance;
 	}
 
-	public void setData_instance(String data_instance) 
+	// setters  & getters for the amount of data stored
+	public int getDataAmount() 
 	{
-		this.data_instance = data_instance;
+		return dataAmount;
 	}
+
+	public void setDataAmount(int i) 
+	{
+		this.dataAmount = i;
+	}
+	
+	
 }

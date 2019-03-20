@@ -4,14 +4,14 @@ public class Data
 {
 	private String temperature;
 	private String aches;
-	private String sore_throat;
+	private String soreThroat;
 	private String tonsilitis;
 	
-	Data(String temperature, String aches, String sore_throat, String tonsilitis)
+	Data(String temperature, String aches, String soreThroat, String tonsilitis)
 	{
 		this.setTemperature(temperature);
 		this.setAches(aches);
-		this.setSore_throat(sore_throat);
+		this.setSoreThroat(soreThroat);
 		this.setTonsilitis(tonsilitis);
 	}
 
@@ -36,14 +36,14 @@ public class Data
 		this.aches = aches;
 	}
 
-	public String getSore_throat() 
+	public String getSoreThroat() 
 	{
-		return sore_throat;
+		return soreThroat;
 	}
 
-	public void setSore_throat(String sore_throat)
+	public void setSoreThroat(String soreThroat)
 	{
-		this.sore_throat = sore_throat;
+		this.soreThroat = soreThroat;
 	}
 
 	public String getTonsilitis() 
@@ -58,6 +58,6 @@ public class Data
 	
 	public String toString()
 	{
-		return "Temperature: "+temperature+"\nAches: "+aches+"\nSore Throat: "+sore_throat+"\nTonsilitis: "+tonsilitis+"\n";
+		return "Temperature: "+temperature+"\nAches: "+aches+"\nSore Throat: "+soreThroat+"\nTonsilitis: "+tonsilitis+"\n";
 	}
 }
