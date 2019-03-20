@@ -1,6 +1,5 @@
 package com.tonsilitis.assignment;
 
-// POJO
 public class Data 
 {
 	private String temperature;
