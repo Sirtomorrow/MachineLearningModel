@@ -2,6 +2,7 @@ package com.tonsilitis.assignment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileProcessor 
@@ -10,8 +11,17 @@ public class FileProcessor
 	private Scanner fileScanner;
 	private String temperatureToken, achesToken, soreThroatToken, tonsilitisToken, dataInstance;
 	private int dataAmount;
-	private int i;
-
+	private int i = 0;
+	private ArrayList<Data> dataList = new ArrayList<Data>();
+	private Data theData;
+	
+	// constructor
+	FileProcessor()
+	{
+		readFile();
+		closeFile();
+	}
+	
 	// read the file entered in
 	public void readFile()
 	{
@@ -46,41 +56,17 @@ public class FileProcessor
 			soreThroatToken = fileScanner.next();
 			tonsilitisToken = fileScanner.next();
 			
-			// set the data instance of the given data
-			setDataInstance(nameDataInstance(i));
-			
-			// create data instance
-			Data data_instance = new Data(temperatureToken, achesToken, soreThroatToken, tonsilitisToken);
-			System.out.println("Data "+i+" has been entered in");
-			System.out.println(data_instance.toString());
+			// insert data instance into data list
+			addData(temperatureToken, achesToken, soreThroatToken, tonsilitisToken);
+
 		}
 		
-		// set the amount of data inputted
+		// set the amount of data inputed
 		setDataAmount(i);
 		
-		// close file
-		fileScanner.close();
-	}
-	
-	// create data instance for whole data
-	public String nameDataInstance(int instance_num)
-	{
-		// name data based on the count
-		String name = "data"+i;
-		
-		return name;
-	}
 
-	// setters & getters for data instances
-	public String getDataInstance() 
-	{
-		return dataInstance;
 	}
 	
-	public void setDataInstance(String data_instance) 
-	{
-		this.dataInstance = data_instance;
-	}
 
 	// setters  & getters for the amount of data stored
 	public int getDataAmount() 
@@ -93,5 +79,99 @@ public class FileProcessor
 		this.dataAmount = i;
 	}
 	
+	// store data instances into a list
+	public void addData(String temperature, String aches, String soreThroat, String tonsilitis)
+	{
+		theData = new Data(temperature, aches, soreThroat, tonsilitis);
+		dataList.add(theData);
+		System.out.println(theData);
+	}
+
+	// get amount of people that had tonsilitis from the sample set
+	public int getYesTonsilitis()
+	{
+		int tonsilitisYes = 0;
+		
+		for(Data d: dataList)
+		{
+			if(d.getTonsilitis().equals("Yes"))
+			{
+				tonsilitisYes++;
+			}
+		}
+		
+		return tonsilitisYes;
+	}
+	
+	// get amount of peple that dont have tonsilitis from the sample set
+	public int getNoTonsilitis()
+	{
+		int tonsilitisNo = 0;
+		
+		for(Data d: dataList)
+		{
+			if(d.getTonsilitis().equals("No"))
+			{
+				tonsilitisNo++;
+			}
+		}
+		
+		return tonsilitisNo;
+	}
+	
+	// the amount of people that had a sore throat from the sample set
+	public int getYesSoreThroat()
+	{
+		int soreThroatYes = 0;
+		
+		for(Data d: dataList)
+		{
+			if(d.getSoreThroat().equals("Yes"))
+			{
+				soreThroatYes++;
+			}
+		}
+		
+		return soreThroatYes;
+	}
+	
+	// the amount of people that didnt have a sore throat from the sample set 
+	public int getNoSoreThroat()
+	{
+		int soreThroatNo = 0;
+		
+		for(Data d: dataList)
+		{
+			if(d.getSoreThroat().equals("No"))
+			{
+				soreThroatNo++;
+			}
+		}
+		
+		return soreThroatNo;
+	}
+	
+	// the amount of people that had aches from the sample set
+	
+	// the amount of people that had aches from the sample set
+	public int getNoAches()
+	{
+		int achesNo = 0;
+		
+		for(Data d: dataList)
+		{
+			if(d.getSoreThroat().equals("No"))
+			{
+				soreThroatNo++;
+			}
+		}
+		
+		return soreThroatNo;
+	}
+	
+	public void closeFile()
+	{
+		fileScanner.close();
+	}
 	
 }
