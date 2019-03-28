@@ -84,7 +84,7 @@ public class FileProcessor
 	{
 		theData = new Data(temperature, aches, soreThroat, tonsilitis);
 		dataList.add(theData);
-		System.out.println(theData);
+		// System.out.println(theData);
 	}
 
 	// get amount of people that had tonsilitis from the sample set
@@ -152,6 +152,20 @@ public class FileProcessor
 	}
 	
 	// the amount of people that had aches from the sample set
+	public int getYesAches()
+	{
+		int achesYes = 0;
+		
+		for(Data d: dataList)
+		{
+			if(d.getAches().equals("Yes"))
+			{
+				achesYes++;
+			}
+		}
+		
+		return achesYes;
+	}
 	
 	// the amount of people that had aches from the sample set
 	public int getNoAches()
@@ -160,15 +174,64 @@ public class FileProcessor
 		
 		for(Data d: dataList)
 		{
-			if(d.getSoreThroat().equals("No"))
+			if(d.getAches().equals("No"))
 			{
-				soreThroatNo++;
+				achesNo++;
 			}
 		}
 		
-		return soreThroatNo;
+		return achesNo;
 	}
 	
+	// get the amount of people with hot temp
+	public int getHotTemp()
+	{
+		int hotTemp = 0;
+		
+		for(Data d: dataList)
+		{
+			if(d.getTemperature().equals("hot"))
+			{
+				hotTemp++;
+			}
+		}
+		
+		return hotTemp;
+	}
+	
+	// get the amount of people with normal temp
+	public int getNormalTemp()
+	{
+		int normalTemp = 0;
+		
+		for(Data d: dataList)
+		{
+			if(d.getTemperature().equals("normal"))
+			{
+				normalTemp++;
+			}
+		}
+		
+		return normalTemp;
+	}
+	
+	// get the amount of people with cold temp
+	public int getCoolTemp()
+	{
+		int coolTemp = 0;
+		
+		for(Data d: dataList)
+		{
+			if(d.getTemperature().equals("cool"))
+			{
+				coolTemp++;
+			}
+		}
+		
+		return coolTemp;
+	}
+	
+	// close the file
 	public void closeFile()
 	{
 		fileScanner.close();

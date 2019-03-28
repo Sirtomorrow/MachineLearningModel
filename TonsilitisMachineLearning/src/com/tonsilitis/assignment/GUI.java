@@ -14,11 +14,13 @@ import javax.swing.JPanel;
 public class GUI extends JFrame implements ActionListener 
 {
 	private JLabel label1, label2, label3;
-	private	JComboBox temp_box, aches_box, soreThroat_box;
+	private	JComboBox tempBox, achesBox, soreThroatBox;
 	private JPanel panel1, panel2, panel3, panel4;
 	private JButton submit_button;
 	private String[] optionString = { "No", "Yes" };
 	private String[] temperatureString = { "hot", "cool", "normal" };
+	private String temperatureInput, soreThroatInput, achesInput;
+	private NaiveBayes nb;
 	
 	public GUI()
 	{
@@ -31,9 +33,9 @@ public class GUI extends JFrame implements ActionListener
 		label3 = new JLabel("Aches: ");
 		
 		// instantiate combo boxes
-		temp_box = new JComboBox(temperatureString);
-		aches_box = new JComboBox(optionString);
-		soreThroat_box = new JComboBox(optionString);
+		tempBox = new JComboBox(temperatureString);
+		achesBox = new JComboBox(optionString);
+		soreThroatBox = new JComboBox(optionString);
 		
 		// instantiate panels
 		panel1 = new JPanel();
@@ -46,17 +48,17 @@ public class GUI extends JFrame implements ActionListener
 		
 		// add action listeners
 		submit_button.addActionListener(this);
-		temp_box.addActionListener(this);
-		aches_box.addActionListener(this);
-		soreThroat_box.addActionListener(this);
+		tempBox.addActionListener(this);
+		achesBox.addActionListener(this);
+		soreThroatBox.addActionListener(this);
 		
 		// add components
 		panel1.add(label1);
-		panel1.add(temp_box);
+		panel1.add(tempBox);
 		panel2.add(label2);
-		panel2.add(aches_box);
+		panel2.add(achesBox);
 		panel3.add(label3);
-		panel3.add(soreThroat_box);
+		panel3.add(soreThroatBox);
 		panel4.add(submit_button);
 		add(panel1);
 		add(panel2);
@@ -72,45 +74,58 @@ public class GUI extends JFrame implements ActionListener
 	
 	public void actionPerformed(ActionEvent event) 
 	{
-		
-		
 		if(event.getSource() == submit_button)
 		{
-			System.out.println("\nTemperature: "+temp_box.getSelectedItem());
-			System.out.println("Aches: "+aches_box.getSelectedItem());
-			System.out.println("Sore Throat: : "+soreThroat_box.getSelectedItem());
+			/* System.out.println("\nTemperature: "+tempBox.getSelectedItem());
+			System.out.println("Aches: "+achesBox.getSelectedItem());
+			System.out.println("Sore Throat: : "+soreThroatBox.getSelectedItem()); */
 			
-			if(temp_box.getSelectedItem() == "Yes" )
-			{
-				System.out.println("TYes");
-			}
+			// get the values given by the GUI
+			setTemperatureInput(tempBox.getSelectedItem().toString());
+			setAchesInput(achesBox.getSelectedItem().toString());
+			setSoreThroatInput(soreThroatBox.getSelectedItem().toString());
 			
-			if(temp_box.getSelectedItem() == "No" )
-			{
-				System.out.println("TNo");
-			}
-			
-			if(aches_box.getSelectedItem() == "Yes" )
-			{
-				System.out.println("AYes");
-			}
-			
-			if(aches_box.getSelectedItem() == "No" )
-			{
-				System.out.println("ANo");
-			}
-			
-			if(soreThroat_box.getSelectedItem() == "Yes" )
-			{
-				System.out.println("SYes");
-			}
-			
-			if(soreThroat_box.getSelectedItem() == "No" )
-			{
-				System.out.println("SNo");
-			}
+			// pass the input from the boxes to the classifier
+			getTonsilitisResult();
 		}
 		
+	}
+	
+	// calculate the result
+	public void getTonsilitisResult()
+	{
+		nb = new NaiveBayes(temperatureInput, achesInput, soreThroatInput);
+	}
+
+	// getters & setters
+	public String getTemperatureInput() 
+	{
+		return temperatureInput;
+	}
+
+	public void setTemperatureInput(String temperatureInput) 
+	{
+		this.temperatureInput = temperatureInput;
+	}
+
+	public String getSoreThroatInput() 
+	{
+		return soreThroatInput;
+	}
+
+	public void setSoreThroatInput(String soreThroatInput) 
+	{
+		this.soreThroatInput = soreThroatInput;
+	}
+
+	public String getAchesInput() 
+	{
+		return achesInput;
+	}
+
+	public void setAchesInput(String achesInput) 
+	{
+		this.achesInput = achesInput;
 	}
 	
 	
