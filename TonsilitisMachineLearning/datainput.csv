@@ -1,13 +1,14 @@
 ﻿Temp,Aches,Sore Throat,Tonsilitis
-hot,Yes,No,Yes
-hot,Yes,Yes,No
-hot,No,No,No
-normal,No,Yes,Yes
-cool,Yes,Yes,No
-cool,Yes,No,No
-cool,No,No,Yes
-normal,No,Yes,Yes
-cool,No,No,No
-normal,Yes,Yes,Yes
-normal,Yes,Yes,Yes
-normal,No,Yes,Yes
+Hot,Yes,No,Yes
+Hot,Yes,Yes,No
+Hot,No,No,No
+Normal,No,Yes,Yes
+Cool,Yes,Yes,No
+Cool,Yes,No,No
+Cool,No,No,Yes
+Normal,No,Yes,Yes
+Cool,No,No,No
+Normal,Yes,Yes,Yes
+Normal,Yes,Yes,Yes
+Normal,No,Yes,Yes
+Normal,Yes,No,No

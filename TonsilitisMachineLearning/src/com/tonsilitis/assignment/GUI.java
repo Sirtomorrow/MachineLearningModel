@@ -18,7 +18,7 @@ public class GUI extends JFrame implements ActionListener
 	private JPanel panel1, panel2, panel3, panel4;
 	private JButton submit_button;
 	private String[] optionString = { "No", "Yes" };
-	private String[] temperatureString = { "hot", "cool", "normal" };
+	private String[] temperatureString = { "Hot", "Cool", "Normal" };
 	private String temperatureInput, soreThroatInput, achesInput;
 	private NaiveBayes nb;
 	
@@ -74,26 +74,23 @@ public class GUI extends JFrame implements ActionListener
 	
 	public void actionPerformed(ActionEvent event) 
 	{
+		// if submit button pressed
 		if(event.getSource() == submit_button)
-		{
-			/* System.out.println("\nTemperature: "+tempBox.getSelectedItem());
-			System.out.println("Aches: "+achesBox.getSelectedItem());
-			System.out.println("Sore Throat: : "+soreThroatBox.getSelectedItem()); */
-			
-			// get the values given by the GUI
+		{			
+			// get the values given by the user through the combo box
 			setTemperatureInput(tempBox.getSelectedItem().toString());
 			setAchesInput(achesBox.getSelectedItem().toString());
 			setSoreThroatInput(soreThroatBox.getSelectedItem().toString());
 			
-			// pass the input from the boxes to the classifier
+			// pass the input from the boxes to the Naive Bayes classifier
 			getTonsilitisResult();
 		}
 		
 	}
 	
-	// calculate the result
+	// calculate the result; send the input to Naive Bayes class
 	public void getTonsilitisResult()
-	{
+	{	
 		nb = new NaiveBayes(temperatureInput, achesInput, soreThroatInput);
 	}
 

@@ -56,8 +56,41 @@ public class Data
 		this.tonsilitis = tonsilitis;
 	}
 	
-	public String toString()
+	// check if the data instance reported user has a sore throat AND tonsilitis
+	public boolean checkSoreThroat()
 	{
-		return "Temperature: "+temperature+"\nAches: "+aches+"\nSore Throat: "+soreThroat+"\nTonsilitis: "+tonsilitis+"\n";
+		boolean state = false;
+		
+		// if person had sore throat AND tonsilitis
+		if(soreThroat.equals("Yes") && tonsilitis.equals("Yes"))
+		{
+			state = true;
+		}
+		// if person had sore throat AND didnt have tonsilitis
+		else if(soreThroat.equals("Yes") && tonsilitis.equals("No"))
+		{
+			state = false;
+		}
+		
+		return state;
+	}
+	
+	// check if the data instance reported user has a sore throat AND tonsilitis
+	public boolean checkNoSoreThroat()
+	{
+		boolean state = false;
+		
+		// if person had no sore throat AND tonsilitis
+		if(soreThroat.equals("No") && tonsilitis.equals("Yes"))
+		{
+			state = true;
+		}
+		// if person had no sore throat AND didnt have tonsilitis
+		else if(soreThroat.equals("No") && tonsilitis.equals("No"))
+		{
+			state = false;
+		}
+		
+		return state;
 	}
 }
