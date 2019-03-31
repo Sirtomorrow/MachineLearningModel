@@ -1,3 +1,6 @@
+/* Author: Ivan Yanez
+ */
+
 package com.tonsilitis.assignment;
 
 import java.io.File;

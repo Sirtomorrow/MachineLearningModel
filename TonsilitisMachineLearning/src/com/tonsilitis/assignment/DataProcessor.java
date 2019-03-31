@@ -1,3 +1,6 @@
+/* Author: Ivan Yanez
+ */
+
 package com.tonsilitis.assignment;
 
 import java.util.ArrayList;
@@ -19,54 +22,69 @@ public class DataProcessor
 		fp.closeFile();
 	}
 	
-	// get amount of people that had tonsilitis from the sample set
-	public int getYesTonsilitis()
+	
+	// get the count of all the temperature states
+	public int getTemperatureCount(String predictor)
 	{
-		int tonsilitisYes = 0;
+		int count = 0;
 		
 		for(Data d: trainingSet)
 		{
-			if(d.getTonsilitis().equals("Yes"))
+			// if this matches the predictor and the state
+			if(d.getTemperature().equals(predictor))
 			{
-				tonsilitisYes++;
+				count++;
 			}
 		}
-		return tonsilitisYes;
+		return count;
 	}
 	
-	// get amount of peple that dont have tonsilitis from the sample set
-	public int getNoTonsilitis()
+	// get the count of all the aches states
+	public int getAchesCount(String predictor)
 	{
-		int tonsilitisNo = 0;
+		int count = 0;
 		
 		for(Data d: trainingSet)
 		{
-			if(d.getTonsilitis().equals("No"))
+			// if this matches the predictor and the state
+			if(d.getAches().equals(predictor))
 			{
-				tonsilitisNo++;
+				count++;
 			}
 		}
 		
-		return tonsilitisNo;
+		return count;
 	}
 	
-	// get amount of peple that have sore throat and tonsilitis
-	public int checkSoreThroat(String soreThroatState, String tonsilititisState)
+	// get the count of all sore throat states
+	public int getSoreThroatCount(String predictor)
 	{
-		int soreThroat = 0;
+		int count = 0;
 		
 		for(Data d: trainingSet)
 		{
-			/* if(d.getSoreThroat().equals(soreThroatState) && d.getTonsilitis().equals(tonsilititisState))
+			// if this matches the predictor and the state
+			if(d.getSoreThroat().equals(predictor))
 			{
-				soreThroat++;
-			} */ 
-			i++;
-			System.out.println("the loop is "+i);
+				count++;
+			}
 		}
 		
-		
-		return soreThroat;
+		return count;
 	}
-	
+
+	// get the count of all tonsilitis states
+	public int getTonsilitisCount(String predictor)
+	{
+		int count = 0;
+		
+		for(Data d: trainingSet)
+		{
+			if(d.getTonsilitis().equals(predictor))
+			{
+				count++;
+			}
+		}
+		return count;
+	}
 }

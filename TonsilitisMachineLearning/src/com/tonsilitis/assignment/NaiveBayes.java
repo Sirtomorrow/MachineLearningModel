@@ -1,6 +1,8 @@
+/* Author: Ivan Yanez
+ */
+
 package com.tonsilitis.assignment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class NaiveBayes 
@@ -10,48 +12,83 @@ public class NaiveBayes
 	private String temperatureInput, soreThroatInput, achesInput; // values inputed by user in the GUI
 	private DataProcessor dp = new DataProcessor();
 	private FileProcessor fp = new FileProcessor();
+	private String[] optionString = { "No", "Yes" };
+	private String[] temperatureString = { "Hot", "Cool", "Normal" };
 	
 	public NaiveBayes(String temperatureInput, String soreThroatInput, String achesInput)
 	{	
-		dp.checkSoreThroat("No", "Yes");
-		// read in the data probabilities and store to a hashmap
+		// get the total data inputed
 		totalCount = fp.getDataCount();
-				
-		// input of patients that had tonsilitis and had no tonsilitis i.e. the whole set
-		hm.put("has tonsilitis",dp.getYesTonsilitis());
-		hm.put("no tonsilitis", dp.getNoTonsilitis());
 		
-		// https://www.techiedelight.com/increment-map-value-java-8/
-		// set initial values to 0
-		hm.putIfAbsent("has sore throat, has tonsilitis", 0); // sore throat states
-		hm.putIfAbsent("has sore throat, no tonsilitis", 0);
-		hm.putIfAbsent("no sore throat, has tonsilitis", 0);
-		hm.putIfAbsent("no sore throat, no tonsilitis", 0);
-		hm.putIfAbsent("has aches, has tonsilitis", 0); // aches states
-		hm.putIfAbsent("has aches, no tonsilitis", 0);
-		hm.putIfAbsent("no aches, has tonsilitis", 0);
-		hm.putIfAbsent("no aches, no tonsilitis", 0);
-		hm.putIfAbsent("hot, has tonsilitis", 0); // temperature states
-		hm.putIfAbsent("hot, no tonsilitis", 0);
-		hm.putIfAbsent("normal, has tonsilitis", 0);
-		hm.putIfAbsent("normal, no tonsilitis", 0);
-		hm.putIfAbsent("cool, has tonsilitis", 0);
-		hm.putIfAbsent("cool, no tonsilitis", 0);
-				
-		// the users input from the GUI
+		// get the users input from the GUI
 		this.setTemperatureInput(temperatureInput);
 		this.setAchesInput(achesInput);
 		this.setSoreThroatInput(soreThroatInput);
+				
+		// set values of the predictors states
+		initialiseValues();
+		
+		// update the values count based on the data entered
+		updateValues();
+		
+		System.out.println(hm.keySet());
+		System.out.println(hm.values());
 		
 		// calculate the probability of tonsilitis given user's input
 		calculateTonsilitis();
 		
 	}
 	
+	
+	// https://www.techiedelight.com/increment-map-value-java-8/
+	// update the vaules of the keys based on the counts of each predictor
+	public void updateValues()
+	{
+		// update sore throat, tonsilitis and aches predictor values
+		for(int i = 0; i < optionString.length; i++)
+		{
+			for(int j = 0; j < optionString.length; j++)
+			{
+				hm.put("SoreThroat"+optionString[i], dp.getSoreThroatCount(optionString[i]));
+				hm.put("Aches"+optionString[i], dp.getAchesCount(optionString[i]));
+				hm.put("Tonsilitis"+optionString[i], dp.getTonsilitisCount(optionString[i]));
+			}
+		}
+		
+		// update temperature predictor values
+		for(int i = 0; i < temperatureString.length; i++)
+		{
+			hm.put(temperatureString[i], dp.getTemperatureCount(temperatureString[i]));
+			
+		}
+	}
+
+	
+	// https://www.techiedelight.com/increment-map-value-java-8/
+	// set the tonsilitis initially
+	public void initialiseValues()
+	{
+		// store all temperature states counts
+		for(int i = 0; i < temperatureString.length; i++)
+		{
+			hm.putIfAbsent(temperatureString[i], 0);
+			
+		}
+		
+		// store both tonsilitis & non-tonsilitis states count
+		for(int i = 0; i < optionString.length; i++)
+		{
+			hm.putIfAbsent("Tonsilitis"+optionString[i], 0);
+			hm.putIfAbsent("SoreThroat"+optionString[i], 0);
+			hm.putIfAbsent("Aches"+optionString[i], 0);
+		}
+		
+	}
+	
+	
+	// calculate the posterior probability
 	public void calculateTonsilitis()
 	{
-		// values that contain the probabilities of the input given
-		int tempState, achesState, soreThroatState;
 		
 		// check what the user's temperature input is
 		if(temperatureInput.equals("Hot"))
@@ -91,6 +128,8 @@ public class NaiveBayes
 		
 	}
 	
+	
+	// getters & setters
 	public String getSoreThroatInput() 
 	{
 		return soreThroatInput;
@@ -119,5 +158,7 @@ public class NaiveBayes
 	public void setAchesInput(String achesInput) 
 	{
 		this.achesInput = achesInput;
-	}
+	}	
+	
+	
 }

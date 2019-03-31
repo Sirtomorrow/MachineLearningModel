@@ -1,5 +1,9 @@
+/* Author: Ivan Yanez
+ */
+
 package com.tonsilitis.assignment;
 
+// Plain Old Java Object
 public class Data 
 {
 	private String temperature;
@@ -54,43 +58,5 @@ public class Data
 	public void setTonsilitis(String tonsilitis) 
 	{
 		this.tonsilitis = tonsilitis;
-	}
-	
-	// check if the data instance reported user has a sore throat AND tonsilitis
-	public boolean checkSoreThroat()
-	{
-		boolean state = false;
-		
-		// if person had sore throat AND tonsilitis
-		if(soreThroat.equals("Yes") && tonsilitis.equals("Yes"))
-		{
-			state = true;
-		}
-		// if person had sore throat AND didnt have tonsilitis
-		else if(soreThroat.equals("Yes") && tonsilitis.equals("No"))
-		{
-			state = false;
-		}
-		
-		return state;
-	}
-	
-	// check if the data instance reported user has a sore throat AND tonsilitis
-	public boolean checkNoSoreThroat()
-	{
-		boolean state = false;
-		
-		// if person had no sore throat AND tonsilitis
-		if(soreThroat.equals("No") && tonsilitis.equals("Yes"))
-		{
-			state = true;
-		}
-		// if person had no sore throat AND didnt have tonsilitis
-		else if(soreThroat.equals("No") && tonsilitis.equals("No"))
-		{
-			state = false;
-		}
-		
-		return state;
 	}
 }
