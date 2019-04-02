@@ -87,4 +87,83 @@ public class DataProcessor
 		}
 		return count;
 	}
+
+	// get the probabilities of aches & sore throat states given tonsilitis
+	public int getProbabilities(String predictor, String predictorState, String tonsilitisState)
+	{
+		int count = 0;
+		
+		// get sore throat
+		if(predictor.equals("SoreThroat"))
+		{
+			for(Data d: trainingSet)
+			{
+				// if tonsilitis state matches aswell as sore throat state, e.g. tonsilitis = "Yes" & sore throat = "Yes"
+				if(d.getTonsilitis().equals(tonsilitisState) && d.getSoreThroat().equals(predictorState))
+				{
+					count++;
+				}
+			}
+			
+		}
+		// get aches
+		else if(predictor.equals("Aches"))
+		{
+			for(Data d: trainingSet)
+			{
+				if(d.getTonsilitis().equals(tonsilitisState) && d.getAches().equals(predictorState))
+				{
+					count++;
+				}
+			}
+		}
+		
+		System.out.println("This is "+predictor+" = "+predictorState+" and tonsilitis is = "+tonsilitisState+" : "+count);
+		return count;
+	}
+	
+	// get the probabilities for temperature states given tonsilitis
+	public int getTempProbabilities(String predictor, String predictorState, String tonsilitisState)
+	{
+		int count = 0;
+		
+		// get hot
+		if(predictor.equals("Hot"))
+		{
+			for(Data d: trainingSet)
+			{
+				// if tonsilitis state matches aswell as sore throat state, e.g. tonsilitis = "Yes" & sore throat = "Yes"
+				if(d.getTonsilitis().equals(tonsilitisState) && d.getSoreThroat().equals(predictorState))
+				{
+					count++;
+				}
+			}
+			
+		}
+		// get normal
+		else if(predictor.equals("Normal"))
+		{
+			for(Data d: trainingSet)
+			{
+				if(d.getTonsilitis().equals(tonsilitisState) && d.getAches().equals(predictorState))
+				{
+					count++;
+				}
+			}
+		}
+		// get cool
+		else if(predictor.equals("Cool"))
+		{
+				for(Data d: trainingSet)
+				{
+					if(d.getTonsilitis().equals(tonsilitisState) && d.getAches().equals(predictorState))
+					{
+						count++;
+					}
+				}
+		}
+		
+		System.out.println("This is "+predictor+" = "+predictorState+" and tonsilitis is = "+tonsilitisState+" : "+count);
+		return count;
+	}
 }

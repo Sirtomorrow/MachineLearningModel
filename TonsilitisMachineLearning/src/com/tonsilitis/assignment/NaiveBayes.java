@@ -8,7 +8,8 @@ import java.util.HashMap;
 public class NaiveBayes 
 {
 	private int totalCount; // amount of data inputted i.e. the data set in the excel file
-	private static HashMap<String, Integer> hm = new HashMap<>(); // https://www.geeksforgeeks.org/java-util-hashmap-in-java/
+	private static HashMap<String, Integer> hm1 = new HashMap<>(); // https://www.geeksforgeeks.org/java-util-hashmap-in-java/
+	private static HashMap<String, Integer> hm2 = new HashMap<>(); // https://www.geeksforgeeks.org/java-util-hashmap-in-java/
 	private String temperatureInput, soreThroatInput, achesInput; // values inputed by user in the GUI
 	private DataProcessor dp = new DataProcessor();
 	private FileProcessor fp = new FileProcessor();
@@ -31,8 +32,11 @@ public class NaiveBayes
 		// update the values count based on the data entered
 		updateValues();
 		
-		System.out.println(hm.keySet());
-		System.out.println(hm.values());
+		System.out.println(hm1.keySet());
+		System.out.println(hm1.values());
+		
+		// calculate probabilitis
+		dp.getProbabilities("SoreThroat", "No", "No");
 		
 		// calculate the probability of tonsilitis given user's input
 		calculateTonsilitis();
@@ -44,25 +48,36 @@ public class NaiveBayes
 	// update the vaules of the keys based on the counts of each predictor
 	public void updateValues()
 	{
-		// update sore throat, tonsilitis and aches predictor values
+		// update sore throat, tonsilitis and aches count values
 		for(int i = 0; i < optionString.length; i++)
 		{
+			hm1.put("SoreThroat"+optionString[i], dp.getSoreThroatCount(optionString[i]));
+			hm1.put("Aches"+optionString[i], dp.getAchesCount(optionString[i]));
+			hm1.put("Tonsilitis"+optionString[i], dp.getTonsilitisCount(optionString[i]));
+			
+			//  update aches & sore throats states count given tonsilitis
 			for(int j = 0; j < optionString.length; j++)
 			{
-				hm.put("SoreThroat"+optionString[i], dp.getSoreThroatCount(optionString[i]));
-				hm.put("Aches"+optionString[i], dp.getAchesCount(optionString[i]));
-				hm.put("Tonsilitis"+optionString[i], dp.getTonsilitisCount(optionString[i]));
+				hm1.put("SoreThroat"+optionString[i]+" & Tonsilitis"+optionString[j], dp.getProbabilities("SoreThroat", optionString[i], optionString[j]));
+				hm1.put("Aches"+optionString[i]+" & Tonsilitis"+optionString[j], dp.getProbabilities("Aches", optionString[i], optionString[j]));
 			}
 		}
 		
-		// update temperature predictor values
+		// update the temperature count values
 		for(int i = 0; i < temperatureString.length; i++)
 		{
-			hm.put(temperatureString[i], dp.getTemperatureCount(temperatureString[i]));
+			hm1.put(temperatureString[i], dp.getTemperatureCount(temperatureString[i]));
 			
+			// store all temperature states given tonsilitis
+			for(int j = 0; j < optionString.length; j++)
+			{
+				hm1.put(temperatureString[i]+"Yes"+" & Tonsilitis"+optionString[j],  dp.getProbabilities(temperatureString[i] , "Yes" , optionString[j]));
+				hm1.put(temperatureString[i]+"No"+" & Tonsilitis"+optionString[j],  dp.getProbabilities(temperatureString[i] , "No", optionString[j]));
+			}
 		}
 	}
 
+	
 	
 	// https://www.techiedelight.com/increment-map-value-java-8/
 	// set the tonsilitis initially
@@ -71,22 +86,55 @@ public class NaiveBayes
 		// store all temperature states counts
 		for(int i = 0; i < temperatureString.length; i++)
 		{
-			hm.putIfAbsent(temperatureString[i], 0);
+			hm1.putIfAbsent(temperatureString[i], 0);
 			
+			// store all temperature states given tonsilitis
+			for(int j = 0; j < optionString.length; j++)
+			{
+				hm1.putIfAbsent(temperatureString[i]+"Yes"+" & Tonsilitis"+optionString[j], 0);
+				hm1.putIfAbsent(temperatureString[i]+"No"+" & Tonsilitis"+optionString[j], 0);
+			}
 		}
 		
-		// store both tonsilitis & non-tonsilitis states count
+		// store both tonsilitis, aches & sore throats states count
 		for(int i = 0; i < optionString.length; i++)
 		{
-			hm.putIfAbsent("Tonsilitis"+optionString[i], 0);
-			hm.putIfAbsent("SoreThroat"+optionString[i], 0);
-			hm.putIfAbsent("Aches"+optionString[i], 0);
+			hm1.putIfAbsent("Tonsilitis"+optionString[i], 0);
+			hm1.putIfAbsent("SoreThroat"+optionString[i], 0);
+			hm1.putIfAbsent("Aches"+optionString[i], 0);
+			
+			//  store aches & sore throats states count given tonsilitis
+			for(int j = 0; j < optionString.length; j++)
+			{
+				hm1.putIfAbsent("SoreThroat"+optionString[i]+" & Tonsilitis"+optionString[j], 0);
+				hm1.putIfAbsent("Aches"+optionString[i]+" & Tonsilitis"+optionString[j], 0);
+			}
 		}
 		
 	}
 	
+	// calculate probabilities
+	public void calculateProbabilities()
+	{
+		// get probability of sore throat states
+		for(int i = 0; i < optionString.length; i++)
+		{
+			for(int j = 0; j < optionString.length; j++)
+			{
+				
+			}
+		}
+		
+		
+		// get probability of aches states
+		
+		
+		
+		// get probability of temperature states
+		
+	}
 	
-	// calculate the posterior probability
+	// calculate the probability of tonsilitis
 	public void calculateTonsilitis()
 	{
 		
