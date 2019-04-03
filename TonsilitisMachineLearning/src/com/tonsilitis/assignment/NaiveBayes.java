@@ -126,6 +126,7 @@ public class NaiveBayes
 		// get probability of sore throat states
 		for(Map.Entry<String, Integer> entry : hm1.entrySet())
 		{
+			// if split == 3??
 			String key = entry.getKey();
 			String[] splitted = key.split(" ", 2);
 			System.out.println(splitted[0]);
