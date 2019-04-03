@@ -118,7 +118,7 @@ public class DataProcessor
 			}
 		}
 		
-		System.out.println("This is "+predictor+" = "+predictorState+" and tonsilitis is = "+tonsilitisState+" : "+count);
+		// System.out.println("This is "+predictor+" = "+predictorState+" and tonsilitis is = "+tonsilitisState+" : "+count);
 		return count;
 	}
 	
@@ -163,7 +163,7 @@ public class DataProcessor
 				}
 		}
 		
-		System.out.println("This is "+predictor+" = "+predictorState+" and tonsilitis is = "+tonsilitisState+" : "+count);
+		// System.out.println("This is "+predictor+" = "+predictorState+" and tonsilitis is = "+tonsilitisState+" : "+count);
 		return count;
 	}
 }

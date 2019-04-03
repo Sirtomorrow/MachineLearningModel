@@ -3,13 +3,16 @@
 
 package com.tonsilitis.assignment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class NaiveBayes 
 {
 	private int totalCount; // amount of data inputted i.e. the data set in the excel file
-	private static HashMap<String, Integer> hm1 = new HashMap<>(); // https://www.geeksforgeeks.org/java-util-hashmap-in-java/
-	private static HashMap<String, Integer> hm2 = new HashMap<>(); // https://www.geeksforgeeks.org/java-util-hashmap-in-java/
+	private static Map<String, Integer> hm1 = new HashMap<>(); // store counts - https://www.geeksforgeeks.org/java-util-hashmap-in-java/
+	private static Map<String, Integer> hm2 = new HashMap<>(); // store probabilities in floats - https://www.geeksforgeeks.org/java-util-hashmap-in-java/
 	private String temperatureInput, soreThroatInput, achesInput; // values inputed by user in the GUI
 	private DataProcessor dp = new DataProcessor();
 	private FileProcessor fp = new FileProcessor();
@@ -37,6 +40,8 @@ public class NaiveBayes
 		
 		// calculate probabilitis
 		dp.getProbabilities("SoreThroat", "No", "No");
+		
+		calculateProbabilities();
 		
 		// calculate the probability of tonsilitis given user's input
 		calculateTonsilitis();
@@ -113,18 +118,18 @@ public class NaiveBayes
 		
 	}
 	
-	// calculate probabilities
+	
+	// calculate probabilities -  https://javatutorial.net/java-iterate-hashmap-example  -  https://stackoverflow.com/questions/5067942/what-is-the-best-way-to-extract-the-first-word-from-a-string-in-java
 	public void calculateProbabilities()
-	{
-		// get probability of sore throat states
-		for(int i = 0; i < optionString.length; i++)
-		{
-			for(int j = 0; j < optionString.length; j++)
-			{
-				
-			}
-		}
+	{	
 		
+		// get probability of sore throat states
+		for(Map.Entry<String, Integer> entry : hm1.entrySet())
+		{
+			String key = entry.getKey();
+			String[] splitted = key.split(" ", 2);
+			System.out.println(splitted[0]);
+		}
 		
 		// get probability of aches states
 		

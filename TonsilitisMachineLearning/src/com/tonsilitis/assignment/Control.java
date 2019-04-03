@@ -3,6 +3,9 @@
 
 package com.tonsilitis.assignment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Control 
 {
 
@@ -13,6 +16,8 @@ public class Control
 		
 		NaiveBayes nb = new NaiveBayes("Hot", "Yes", "Yes");
 		System.out.println(nb);
+		
+		
 	}
 
 }
