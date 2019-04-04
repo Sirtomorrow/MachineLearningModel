@@ -3,11 +3,8 @@
 
 package com.tonsilitis.assignment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class NaiveBayes 
 {
@@ -39,8 +36,10 @@ public class NaiveBayes
 		//claculate the probabilities
 		calculateProbabilities();
 		
-		System.out.println(hm1.keySet());
-		// System.out.println(hm2.values());
+		for(Map.Entry<String, Integer> entry : hm1.entrySet())
+		{
+			System.out.println(entry.getKey());
+		}
 		
 		// calculate the probability of tonsilitis given user's input
 		// calculateTonsilitis();
@@ -76,11 +75,11 @@ public class NaiveBayes
 			// store all temperature states given tonsilitis
 			for(int j = 0; j < optionString.length; j++)
 			{
-				hm1.put(temperatureString[i]+"Yes"+" & Tonsilitis"+optionString[j],  dp.getProbabilities(temperatureString[i] , "Yes" , optionString[j]));
-				hm1.put(temperatureString[i]+"No"+" & Tonsilitis"+optionString[j],  dp.getProbabilities(temperatureString[i] , "No", optionString[j]));
+				hm1.put(temperatureString[i]+"Yes"+" & Tonsilitis"+optionString[j],  dp.getTempProbabilities(temperatureString[i], "Yes", optionString[j]));
+				hm1.put(temperatureString[i]+"No"+" & Tonsilitis"+optionString[j],  dp.getTempProbabilities(temperatureString[i], "No", optionString[j]));
 			}
 		}
-		
+	
 	}
 
 	
@@ -88,14 +87,7 @@ public class NaiveBayes
 	// https://www.techiedelight.com/increment-map-value-java-8/
 	// set the tonsilitis initially
 	public void initialiseValues()
-	{
-		// input total counts
-		hm1.putIfAbsent("TotalSoreThroat", 0);
-		hm1.putIfAbsent("TotalAches", 0);
-		hm1.putIfAbsent("TotalHot", 0);
-		hm1.putIfAbsent("TotalNormal", 0);
-		hm1.putIfAbsent("TotalCool", 0);
-		
+	{	
 		// store all temperature states counts
 		for(int i = 0; i < temperatureString.length; i++)
 		{
@@ -131,47 +123,86 @@ public class NaiveBayes
 	public void calculateProbabilities()
 	{	
 		
-		/* get probability of sore throat, aches and temperature states
+		// get probability of sore throat, aches and temperature states
 		for(Map.Entry<String, Integer> entry : hm1.entrySet())
 		{
 			String key = entry.getKey();
-			float entryValue = entry.getValue();
+			int value = entry.getValue();
 			String[] splitted = key.split(" ", 3);
-			String firstword = splitted[0];;
-			System.out.println(hm1.get("SoreThroat"));
+			String firstword = splitted[0];
 			
 			// if the key had 3 words
 			if(splitted.length == 3)
 			{
 				if(firstword.contains("SoreThroat"))
 				{
-					// float value = (float) entryValue / dp.getSO;
-					System.out.println();
-					hm2.put(key, (float) 2.65);
+					if(firstword.contains("Yes"))
+					{
+						float probability = (float) value/hm1.get("SoreThroatYes");
+						hm2.put(key, probability);
+					}
+					else if(firstword.contains("No"))
+					{
+						float probability = (float) value/hm1.get("SoreThroatNo");
+						hm2.put(key, probability);
+					}
+						
 				}
 				else if(firstword.contains("Aches"))
 				{
-					
+					if(firstword.contains("Yes"))
+					{
+						float probability = (float) value/hm1.get("AchesYes");
+						hm2.put(key, probability);
+					}
+					else if(firstword.contains("No"))
+					{
+						float probability = (float) value/hm1.get("AchesNo");
+						hm2.put(key, probability);
+					}
 				}
 				else if(firstword.contains("Hot"))
 				{
-
+					/* if(firstword.contains("Yes"))
+					{
+						float probability = (float) value/hm1.get("HotYes");
+						hm2.put(key, probability);
+					}
+					else if(firstword.contains("No"))
+					{
+						float probability = (float) value/hm1.get("HotNo");
+						hm2.put(key, probability);
+					} */
 				}
 				else if(firstword.contains("Normal"))
 				{
-					
+					/* if(firstword.contains("Yes"))
+					{
+						float probability = (float) value/hm1.get("NormalYes");
+						hm2.put(key, probability);
+					}
+					else if(firstword.contains("No"))
+					{
+						float probability = (float) value/hm1.get("NormalNo");
+						hm2.put(key, probability);
+					} */
 				}
 				else if(firstword.contains("Cool"))
 				{
-					
+					/* if(firstword.contains("Yes"))
+					{
+						float probability = (float) value/hm1.get("CoolYes");
+						hm2.put(key, probability);
+					}
+					else if(firstword.contains("No"))
+					{
+						float probability = (float) value/hm1.get("CoolNo");
+						hm2.put(key, probability);
+					} */
 				}
 			}
 		}
 		
-		for(Map.Entry<String, Float> set : hm2.entrySet())
-		{
-			// System.out.println("float: "+set.getKey());
-		} */
 	} 
 	
 	// calculate the probability of tonsilitis
