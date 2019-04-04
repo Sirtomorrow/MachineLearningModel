@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class NaiveBayes 
 {
 	private int totalCount; // amount of data inputted i.e. the data set in the excel file
 	private static Map<String, Integer> hm1 = new HashMap<>(); // store counts - https://www.geeksforgeeks.org/java-util-hashmap-in-java/
-	private static Map<String, Integer> hm2 = new HashMap<>(); // store probabilities in floats - https://www.geeksforgeeks.org/java-util-hashmap-in-java/
+	private static Map<String, Float> hm2 = new HashMap<>(); // store probabilities in floats - https://www.geeksforgeeks.org/java-util-hashmap-in-java/
 	private String temperatureInput, soreThroatInput, achesInput; // values inputed by user in the GUI
 	private DataProcessor dp = new DataProcessor();
 	private FileProcessor fp = new FileProcessor();
@@ -31,20 +32,18 @@ public class NaiveBayes
 				
 		// set values of the predictors states
 		initialiseValues();
-		
+				
 		// update the values count based on the data entered
 		updateValues();
 		
-		System.out.println(hm1.keySet());
-		System.out.println(hm1.values());
-		
-		// calculate probabilitis
-		dp.getProbabilities("SoreThroat", "No", "No");
-		
+		//claculate the probabilities
 		calculateProbabilities();
 		
+		System.out.println(hm1.keySet());
+		// System.out.println(hm2.values());
+		
 		// calculate the probability of tonsilitis given user's input
-		calculateTonsilitis();
+		// calculateTonsilitis();
 		
 	}
 	
@@ -53,6 +52,7 @@ public class NaiveBayes
 	// update the vaules of the keys based on the counts of each predictor
 	public void updateValues()
 	{
+		
 		// update sore throat, tonsilitis and aches count values
 		for(int i = 0; i < optionString.length; i++)
 		{
@@ -80,6 +80,7 @@ public class NaiveBayes
 				hm1.put(temperatureString[i]+"No"+" & Tonsilitis"+optionString[j],  dp.getProbabilities(temperatureString[i] , "No", optionString[j]));
 			}
 		}
+		
 	}
 
 	
@@ -88,6 +89,13 @@ public class NaiveBayes
 	// set the tonsilitis initially
 	public void initialiseValues()
 	{
+		// input total counts
+		hm1.putIfAbsent("TotalSoreThroat", 0);
+		hm1.putIfAbsent("TotalAches", 0);
+		hm1.putIfAbsent("TotalHot", 0);
+		hm1.putIfAbsent("TotalNormal", 0);
+		hm1.putIfAbsent("TotalCool", 0);
+		
 		// store all temperature states counts
 		for(int i = 0; i < temperatureString.length; i++)
 		{
@@ -123,22 +131,48 @@ public class NaiveBayes
 	public void calculateProbabilities()
 	{	
 		
-		// get probability of sore throat states
+		/* get probability of sore throat, aches and temperature states
 		for(Map.Entry<String, Integer> entry : hm1.entrySet())
 		{
-			// if split == 3??
 			String key = entry.getKey();
-			String[] splitted = key.split(" ", 2);
-			System.out.println(splitted[0]);
+			float entryValue = entry.getValue();
+			String[] splitted = key.split(" ", 3);
+			String firstword = splitted[0];;
+			System.out.println(hm1.get("SoreThroat"));
+			
+			// if the key had 3 words
+			if(splitted.length == 3)
+			{
+				if(firstword.contains("SoreThroat"))
+				{
+					// float value = (float) entryValue / dp.getSO;
+					System.out.println();
+					hm2.put(key, (float) 2.65);
+				}
+				else if(firstword.contains("Aches"))
+				{
+					
+				}
+				else if(firstword.contains("Hot"))
+				{
+
+				}
+				else if(firstword.contains("Normal"))
+				{
+					
+				}
+				else if(firstword.contains("Cool"))
+				{
+					
+				}
+			}
 		}
 		
-		// get probability of aches states
-		
-		
-		
-		// get probability of temperature states
-		
-	}
+		for(Map.Entry<String, Float> set : hm2.entrySet())
+		{
+			// System.out.println("float: "+set.getKey());
+		} */
+	} 
 	
 	// calculate the probability of tonsilitis
 	public void calculateTonsilitis()

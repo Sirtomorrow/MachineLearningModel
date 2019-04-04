@@ -17,7 +17,6 @@ public class Control
 		NaiveBayes nb = new NaiveBayes("Hot", "Yes", "Yes");
 		System.out.println(nb);
 		
-		
 	}
 
 }
