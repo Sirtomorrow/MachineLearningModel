@@ -24,7 +24,7 @@ public class GUI extends JFrame implements ActionListener
 	private String[] optionString = { "No", "Yes" };
 	private String[] temperatureString = { "Hot", "Cool", "Normal" };
 	private String temperatureInput, soreThroatInput, achesInput;
-	private NaiveBayes nb;
+	private NaiveBayes nb = new NaiveBayes("Hot", "No", "No"); // default settings; initially setup the training set
 	
 	public GUI()
 	{
@@ -59,6 +59,7 @@ public class GUI extends JFrame implements ActionListener
 		
 		// add action listeners
 		submit_button.addActionListener(this);
+		eval_button.addActionListener(this);
 		tempBox.addActionListener(this);
 		achesBox.addActionListener(this);
 		soreThroatBox.addActionListener(this);
@@ -95,23 +96,18 @@ public class GUI extends JFrame implements ActionListener
 			setSoreThroatInput(soreThroatBox.getSelectedItem().toString());
 			
 			// pass the input from the boxes to the Naive Bayes classifier
-			getTonsilitisResult();
-		}
-		
-		// if evaluate button is pressed
-		if(event.getSource() == eval_button)
-		{
+			// insert in the input to the classifier
+			nb = new NaiveBayes(temperatureInput, achesInput, soreThroatInput);
+			JOptionPane.showMessageDialog(this, nb.calculateTonsilitis());
 			
+		}
+		// if evaluate button is pressed
+		else if(event.getSource() == eval_button)
+		{
+			nb.getEvaluation();
 		}
 	}
 	
-	// calculate the result; send the input to Naive Bayes class
-	public void getTonsilitisResult()
-	{	
-		// insert in the input to the classifier
-		nb = new NaiveBayes(temperatureInput, achesInput, soreThroatInput);
-		JOptionPane.showMessageDialog(this, nb.calculateTonsilitis());
-	}
 
 	// getters & setters
 	public String getTemperatureInput() 

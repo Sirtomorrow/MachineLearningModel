@@ -3,7 +3,9 @@
 
 package com.tonsilitis.assignment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class NaiveBayes 
@@ -14,10 +16,12 @@ public class NaiveBayes
 	private String temperatureInput, soreThroatInput, achesInput; // values inputed by user in the GUI
 	private DataProcessor dp;
 	private FileProcessor fp;
+	private ArrayList<Data> evalSet = new ArrayList<Data>();
 	private String[] optionString = { "No", "Yes" };
 	private String[] temperatureString = { "Hot", "Cool", "Normal" };
+	private Iterator itr;
 	
-	public NaiveBayes(String temperatureInput, String soreThroatInput, String achesInput)
+	NaiveBayes(String temperatureInput, String soreThroatInput, String achesInput)
 	{
 		// instantiate
 		hm1 = new HashMap<>();
@@ -40,6 +44,19 @@ public class NaiveBayes
 		calculateProbabilities();
 		
 	}
+	
+	// evaluate the evaluation set
+	public void getEvaluation()
+	{
+		// evaluationSet
+		dp.getEvaluationSet();
+		
+		// set the iterator
+		itr = evalSet.iterator();
+		
+
+	}
+	
 	
 	
 	// https://www.techiedelight.com/increment-map-value-java-8/

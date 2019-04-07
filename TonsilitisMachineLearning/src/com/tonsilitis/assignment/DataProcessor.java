@@ -8,12 +8,15 @@ import java.util.ArrayList;
 public class DataProcessor 
 {
 	private ArrayList<Data> trainingSet = new ArrayList<Data>(); // list of the data instances
+	private ArrayList<Data> evalSet = new ArrayList<Data>();
 	private FileProcessor fp = new FileProcessor();
+	private String trainingFile = "datainput.csv";
+	private String evaluationFile = "evaluateinput.csv";
 	
 	DataProcessor()
 	{
 		// read the file
-		fp.readFile();
+		fp.readFile(trainingFile);
 		
 		// get the list from file processor
 		trainingSet = fp.returnList();
@@ -22,6 +25,22 @@ public class DataProcessor
 		fp.closeFile();
 	}
 	
+	// evaluate the program
+	public ArrayList<Data> getEvaluationSet()
+	{	
+		// read the file
+		fp.readFile(evaluationFile);
+		
+		// get the evaluation set from file processor
+		evalSet = fp.returnEvalList();
+		
+		System.out.println(evalSet);
+		
+		// close file
+		fp.closeFile();
+		
+		return evalSet;
+	}
 	
 	// get the count of all the temperature states
 	public int getTemperatureCount(String predictor)

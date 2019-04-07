@@ -16,14 +16,15 @@ public class FileProcessor
 	private static int i = 0;
 	private Data theData;
 	private ArrayList<Data> list = new ArrayList<Data>();
+	private ArrayList<Data> evalList = new ArrayList<Data>();
 	
 	// read the file entered in
-	public void readFile()
+	public void readFile(String filename)
 	{	
 		// check the file
 		try 
 		{
-			dataSet = new File("datainput.csv");
+			dataSet = new File(filename);
 			fileScanner = new Scanner(dataSet);
 			
 			// change delimiter
@@ -48,8 +49,16 @@ public class FileProcessor
 			soreThroatToken = fileScanner.next();
 			tonsilitisToken = fileScanner.next();
 			
-			// insert data instance into data list
-			createDataInstances(temperatureToken, achesToken, soreThroatToken, tonsilitisToken);
+			if(filename.equals("evaluationFile.csv"))
+			{
+				theData = new Data(temperatureToken, achesToken, soreThroatToken, tonsilitisToken);
+				evalList.add(theData);
+			}
+			else
+			{
+				// insert data instance into data list
+				createDataInstances(temperatureToken, achesToken, soreThroatToken, tonsilitisToken);
+			}
 		}
 	}
 	
@@ -63,6 +72,11 @@ public class FileProcessor
 	public ArrayList<Data> returnList()
 	{
 		return list;
+	}
+	
+	public ArrayList<Data> returnEvalList()
+	{
+		return evalList;
 	}
 	
 	public int getDataCount() 
