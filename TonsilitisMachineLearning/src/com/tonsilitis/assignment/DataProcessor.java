@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class DataProcessor 
 {
 	private ArrayList<Data> trainingSet = new ArrayList<Data>(); // list of the data instances
-	private static int i = 0;
 	private FileProcessor fp = new FileProcessor();
 	
 	DataProcessor()
@@ -16,8 +15,9 @@ public class DataProcessor
 		// read the file
 		fp.readFile();
 		
+		// get the list from file processor
 		trainingSet = fp.returnList();
-		System.out.println(trainingSet);
+		
 		// close the file
 		fp.closeFile();
 	}
@@ -122,7 +122,7 @@ public class DataProcessor
 	}
 	
 	// get the probabilities for temperature states given tonsilitis
-	public int getTempProbabilities(String predictor, String predictorState, String tonsilitisState)
+	public int getTempProbabilities(String predictor, String tonsilitisState)
 	{
 		int count = 0;
 		
@@ -132,7 +132,7 @@ public class DataProcessor
 			for(Data d: trainingSet)
 			{
 				// if tonsilitis state matches aswell as sore throat state, e.g. tonsilitis = "Yes" & sore throat = "Yes"
-				if(d.getTonsilitis().equals(tonsilitisState) && d.getSoreThroat().equals(predictorState))
+				if(d.getTemperature().equals("Hot") && d.getTonsilitis().equals(tonsilitisState))
 				{
 					count++;
 				}
@@ -144,7 +144,7 @@ public class DataProcessor
 		{
 			for(Data d: trainingSet)
 			{
-				if(d.getTonsilitis().equals(tonsilitisState) && d.getAches().equals(predictorState))
+				if(d.getTemperature().equals("Normal") && d.getTonsilitis().equals(tonsilitisState))
 				{
 					count++;
 				}
@@ -155,7 +155,7 @@ public class DataProcessor
 		{
 				for(Data d: trainingSet)
 				{
-					if(d.getTonsilitis().equals(tonsilitisState) && d.getAches().equals(predictorState))
+					if(d.getTemperature().equals("Cool") && d.getTonsilitis().equals(tonsilitisState))
 					{
 						count++;
 					}

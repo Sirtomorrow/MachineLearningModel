@@ -72,7 +72,7 @@ public class FileProcessor
 
 	public void setDataCount(int i) 
 	{
-		this.i = i;
+		FileProcessor.i = i;
 	}
 	
 	// close the file
