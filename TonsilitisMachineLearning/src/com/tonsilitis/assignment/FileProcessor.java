@@ -49,7 +49,7 @@ public class FileProcessor
 			soreThroatToken = fileScanner.next();
 			tonsilitisToken = fileScanner.next();
 			
-			if(filename.equals("evaluationFile.csv"))
+			if(filename.equals("evaluateinput.csv"))
 			{
 				theData = new Data(temperatureToken, achesToken, soreThroatToken, tonsilitisToken);
 				evalList.add(theData);

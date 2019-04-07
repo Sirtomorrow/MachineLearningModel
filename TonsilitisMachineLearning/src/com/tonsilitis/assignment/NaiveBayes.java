@@ -13,13 +13,12 @@ public class NaiveBayes
 	private int totalCount; // amount of data inputted i.e. the data set in the excel file
 	private static Map<String, Integer> hm1; // store counts - https://www.geeksforgeeks.org/java-util-hashmap-in-java/
 	private static Map<String, Float> hm2; // store probabilities in floats - https://www.geeksforgeeks.org/java-util-hashmap-in-java/
-	private String temperatureInput, soreThroatInput, achesInput; // values inputed by user in the GUI
+	private String temperatureInput, soreThroatInput, achesInput, tonsilitisInput; // values inputed by user in the GUI
 	private DataProcessor dp;
 	private FileProcessor fp;
 	private ArrayList<Data> evalSet = new ArrayList<Data>();
 	private String[] optionString = { "No", "Yes" };
 	private String[] temperatureString = { "Hot", "Cool", "Normal" };
-	private Iterator itr;
 	
 	NaiveBayes(String temperatureInput, String soreThroatInput, String achesInput)
 	{
@@ -33,9 +32,9 @@ public class NaiveBayes
 		totalCount = fp.getDataCount();
 		
 		// get the users input from the GUI
-		this.setTemperatureInput(temperatureInput);
-		this.setAchesInput(achesInput);
-		this.setSoreThroatInput(soreThroatInput);
+		this.temperatureInput = temperatureInput;
+		this.achesInput = achesInput;
+		this.soreThroatInput = soreThroatInput;
 				
 		// update the values count based on the data entered
 		getCount();
@@ -43,17 +42,28 @@ public class NaiveBayes
 		// calculate the probabilities
 		calculateProbabilities();
 		
+		// calculate tonsilitis
+		// calculateTonsilitis();
+		
+		// evaluate
+		getEvaluation();
 	}
 	
 	// evaluate the evaluation set
 	public void getEvaluation()
-	{
+	{	
 		// evaluationSet
-		dp.getEvaluationSet();
+		evalSet = dp.getEvaluationSet();
 		
-		// set the iterator
-		itr = evalSet.iterator();
-		
+		for(int i = 0; i < evalSet.size(); i++)
+		{
+			setAchesInput(evalSet.get(i).getAches());
+			setSoreThroatInput(evalSet.get(i).getSoreThroat());
+			setTemperatureInput(evalSet.get(i).getTemperature());
+			setTonsilitisInput(evalSet.get(i).getTonsilitis());
+			
+			calculateTonsilitis();
+		}
 
 	}
 	
@@ -297,6 +307,14 @@ public class NaiveBayes
 	public void setAchesInput(String achesInput) 
 	{
 		this.achesInput = achesInput;
+	}
+
+	public String getTonsilitisInput() {
+		return tonsilitisInput;
+	}
+
+	public void setTonsilitisInput(String tonsilitisInput) {
+		this.tonsilitisInput = tonsilitisInput;
 	}	
 	
 	
