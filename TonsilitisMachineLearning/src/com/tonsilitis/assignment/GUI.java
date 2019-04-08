@@ -16,15 +16,15 @@ import javax.swing.JTextField;
 
 public class GUI extends JFrame implements ActionListener 
 {
-	private JLabel label1, label2, label3, label4;
+	private JLabel label1, label2, label3;
 	private	JComboBox<String> tempBox, achesBox, soreThroatBox;
-	private JTextField tf1;
-	private JPanel panel1, panel2, panel3, panel4, panel5;
+	private JPanel panel1, panel2, panel3, panel4;
 	private JButton submit_button, eval_button;
 	private String[] optionString = { "No", "Yes" };
 	private String[] temperatureString = { "Hot", "Cool", "Normal" };
 	private String temperatureInput, soreThroatInput, achesInput;
 	private NaiveBayes nb = new NaiveBayes("Hot", "No", "No"); // default settings; initially setup the training set
+	private static int check = 0;
 	
 	public GUI()
 	{
@@ -33,8 +33,9 @@ public class GUI extends JFrame implements ActionListener
 		
 		// instantiate the labels
 		label1 = new JLabel("Temperature: ");
-		label2 = new JLabel("Sore Throat: ");
-		label3 = new JLabel("Aches: ");
+		label2 = new JLabel("Aches: ");
+		label3 = new JLabel("Sore Throat: ");
+		
 		
 		// instantiate combo boxes
 		tempBox = new JComboBox<String>(temperatureString);
@@ -49,7 +50,6 @@ public class GUI extends JFrame implements ActionListener
 		panel2 = new JPanel();
 		panel3 = new JPanel();
 		panel4 = new JPanel();
-		panel5 = new JPanel();
 		
 		// instantiate buttons
 		submit_button = new JButton("Submit");
@@ -77,6 +77,7 @@ public class GUI extends JFrame implements ActionListener
 		add(panel2);
 		add(panel3);
 		add(panel4);
+
 		
 		// set screen layouts
 		setLocation(400,100);
@@ -98,16 +99,46 @@ public class GUI extends JFrame implements ActionListener
 			// pass the input from the boxes to the Naive Bayes classifier
 			// insert in the input to the classifier
 			nb = new NaiveBayes(temperatureInput, achesInput, soreThroatInput);
-			JOptionPane.showMessageDialog(this, nb.calculateTonsilitis());
 			
+			// process the values
+			nb.getCount();
+			
+			// calculate the probabilities
+			nb.calculateProbabilities();
+			
+			
+			// get the result of tonsilitis
+			String result = nb.calculateTonsilitis();
+					
+			if(result.equals("Yes"))
+			{
+				JOptionPane.showMessageDialog(this, "User likely has tonsilitis");
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(this, "User likely doesnt have tonsilitis");
+			}
+			
+			// if data has been processed
+			check = 1;
 		}
 		// if evaluate button is pressed
 		else if(event.getSource() == eval_button)
 		{
+			// check if data has not been processed
+			if(check == 0)
+			{
+				// process the values
+				nb.getCount();
+				
+				// calculate the probabilities
+				nb.calculateProbabilities();
+			}
+
 			nb.getEvaluation();
+			
 		}
 	}
-	
 
 	// getters & setters
 	public String getTemperatureInput() 

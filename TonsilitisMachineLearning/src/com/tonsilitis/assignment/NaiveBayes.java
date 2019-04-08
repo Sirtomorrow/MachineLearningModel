@@ -5,7 +5,6 @@ package com.tonsilitis.assignment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class NaiveBayes 
@@ -41,20 +40,17 @@ public class NaiveBayes
 		
 		// calculate the probabilities
 		calculateProbabilities();
-		
-		// calculate tonsilitis
-		// calculateTonsilitis();
-		
-		// evaluate
-		getEvaluation();
 	}
 	
 	// evaluate the evaluation set
-	public void getEvaluation()
+	public float getEvaluation()
 	{	
+		float correct = 0;
+		
 		// evaluationSet
 		evalSet = dp.getEvaluationSet();
 		
+		// loop through evaluation
 		for(int i = 0; i < evalSet.size(); i++)
 		{
 			setAchesInput(evalSet.get(i).getAches());
@@ -62,8 +58,14 @@ public class NaiveBayes
 			setTemperatureInput(evalSet.get(i).getTemperature());
 			setTonsilitisInput(evalSet.get(i).getTonsilitis());
 			
-			calculateTonsilitis();
+			// expected tonsilitis outcome
+			System.out.println("Expected tonsilitis outcome: "+getTonsilitisInput());
+			
+			// calculate chances of tonsilitis
+			System.out.println("Actual tonsilitis outcome: "+calculateTonsilitis()+"\n");
 		}
+		
+		return correct;
 
 	}
 	
@@ -266,12 +268,16 @@ public class NaiveBayes
 		// print out to user
 		if(probabilityYes > probabilityNo)
 		{
-			result = "User likely has tonsilitis";
+			result = "Yes";
 		}
 		else
 		{
-			result = "User likely has no tonsilitis";
+			result = "No";
 		}
+		
+		// show the percentage of the result
+		System.out.println("Chances of tonsilitis is "+(probabilityYes*100)+"%");
+		System.out.println("Chances of no tonsilitis is "+(probabilityNo*100)+"%");
 		
 		return result;
 	}
@@ -279,6 +285,11 @@ public class NaiveBayes
 	
 	
 	// getters & setters
+	public int getEvalSetLength()
+	{
+		return evalSet.size();
+	}
+	
 	public String getSoreThroatInput() 
 	{
 		return soreThroatInput;
