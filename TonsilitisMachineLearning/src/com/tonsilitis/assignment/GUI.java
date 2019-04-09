@@ -24,7 +24,6 @@ public class GUI extends JFrame implements ActionListener
 	private String[] temperatureString = { "Hot", "Cool", "Normal" };
 	private String temperatureInput, soreThroatInput, achesInput;
 	private NaiveBayes nb = new NaiveBayes("Hot", "No", "No"); // default settings; initially setup the training set
-	private static int check = 0;
 	
 	public GUI()
 	{
@@ -100,13 +99,6 @@ public class GUI extends JFrame implements ActionListener
 			// insert in the input to the classifier
 			nb = new NaiveBayes(temperatureInput, achesInput, soreThroatInput);
 			
-			// process the values
-			nb.getCount();
-			
-			// calculate the probabilities
-			nb.calculateProbabilities();
-			
-			
 			// get the result of tonsilitis
 			String result = nb.calculateTonsilitis();
 					
@@ -119,25 +111,18 @@ public class GUI extends JFrame implements ActionListener
 				JOptionPane.showMessageDialog(this, "User likely doesnt have tonsilitis");
 			}
 			
-			// if data has been processed
-			check = 1;
+
 		}
 		// if evaluate button is pressed
 		else if(event.getSource() == eval_button)
 		{
-			// check if data has not been processed
-			if(check == 0)
-			{
-				// process the values
-				nb.getCount();
-				
-				// calculate the probabilities
-				nb.calculateProbabilities();
-				
-			}
-
-			nb.getEvaluation();
+			float evaluationAccuracy;
 			
+			// check if data has not been processed
+			evaluationAccuracy = nb.getEvaluation();
+			
+			// Show the program accuracy in percentage
+			JOptionPane.showMessageDialog(this, "The program has an "+(evaluationAccuracy*100)+"% accuracy rate");
 		}
 	}
 

@@ -49,7 +49,7 @@ public class NaiveBayes
 	{	
 		float result = 0;
 		int correct = 0;
-		int total = evalSet.size();
+		String tonsilitisResult;
 		
 		// evaluationSet
 		evalSet = dp.getEvaluationSet();
@@ -69,14 +69,21 @@ public class NaiveBayes
 			// expected tonsilitis outcome
 			System.out.println("\nExpected tonsilitis outcome: "+getTonsilitisInput());
 			
+			tonsilitisResult = calculateTonsilitis();
+			
 			// calculate chances of tonsilitis
-			System.out.println("Actual tonsilitis outcome: "+calculateTonsilitis()+"\n");
+			System.out.println("Actual tonsilitis outcome: "+tonsilitisResult+"\n");
 			
-			
+			if(getTonsilitisInput().equals(tonsilitisResult))
+			{
+				correct++;
+			}
 		}
 		
-		result = (float) correct/total;
+		// accuracy of the result
+		result =  (float) correct / evalSet.size();
 		
+		// return the result
 		return result;
 
 	}
@@ -84,7 +91,7 @@ public class NaiveBayes
 	
 	
 	// https://www.techiedelight.com/increment-map-value-java-8/
-	// get the count of the keys
+	// get the count of the keys/predictors
 	public void getCount()
 	{
 		
