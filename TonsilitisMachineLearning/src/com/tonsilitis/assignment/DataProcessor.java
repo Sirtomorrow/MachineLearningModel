@@ -35,7 +35,6 @@ public class DataProcessor
 		// get the evaluation set from file processor
 		evalSet = fp.returnEvalList();
 		
-		
 		// close file
 		fp.closeFile();
 		

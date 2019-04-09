@@ -133,6 +133,7 @@ public class GUI extends JFrame implements ActionListener
 				
 				// calculate the probabilities
 				nb.calculateProbabilities();
+				
 			}
 
 			nb.getEvaluation();

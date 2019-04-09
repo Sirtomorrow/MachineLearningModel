@@ -18,6 +18,7 @@ public class NaiveBayes
 	private ArrayList<Data> evalSet = new ArrayList<Data>();
 	private String[] optionString = { "No", "Yes" };
 	private String[] temperatureString = { "Hot", "Cool", "Normal" };
+	private float probabiltiyYes, probabiltiyNo;
 	
 	NaiveBayes(String temperatureInput, String soreThroatInput, String achesInput)
 	{
@@ -40,12 +41,15 @@ public class NaiveBayes
 		
 		// calculate the probabilities
 		calculateProbabilities();
+		
 	}
 	
 	// evaluate the evaluation set
 	public float getEvaluation()
 	{	
-		float correct = 0;
+		float result = 0;
+		int correct = 0;
+		int total = evalSet.size();
 		
 		// evaluationSet
 		evalSet = dp.getEvaluationSet();
@@ -58,14 +62,22 @@ public class NaiveBayes
 			setTemperatureInput(evalSet.get(i).getTemperature());
 			setTonsilitisInput(evalSet.get(i).getTonsilitis());
 			
+			System.out.println("Evaluating ...   Temperature="+getTemperatureInput()+
+											   "   Aches="+getAchesInput()+
+											   "   SoreThroat="+getSoreThroatInput());
+			
 			// expected tonsilitis outcome
-			System.out.println("Expected tonsilitis outcome: "+getTonsilitisInput());
+			System.out.println("\nExpected tonsilitis outcome: "+getTonsilitisInput());
 			
 			// calculate chances of tonsilitis
 			System.out.println("Actual tonsilitis outcome: "+calculateTonsilitis()+"\n");
+			
+			
 		}
 		
-		return correct;
+		result = (float) correct/total;
+		
+		return result;
 
 	}
 	
@@ -261,10 +273,21 @@ public class NaiveBayes
 			OppSt = hm2.get("SoreThroatNo & TonsilitisNo");
 		}
 		
-		probabilityYes = TInput * StInput * AInput * hm2.get("TonsilitisYes");
-		probabilityNo = OppT * OppSt * OppA * hm2.get("TonsilitisNo");
+		probabilityYes = (TInput * StInput * AInput * hm2.get("TonsilitisYes"));
+		probabilityNo = (OppT * OppSt * OppA * hm2.get("TonsilitisNo"));
 		
-		
+		// in case of null value
+		if(probabilityYes == 0)
+		{
+			probabilityNo = (OppT * OppSt * OppA * hm2.get("TonsilitisNo"));
+			probabilityNo = probabilityNo * 1;
+		}
+		else if(probabilityNo == 0)
+		{
+			probabilityYes = (TInput * StInput * AInput * hm2.get("TonsilitisYes"));
+			probabilityYes = probabilityYes * 1;
+		}
+
 		// print out to user
 		if(probabilityYes > probabilityNo)
 		{
@@ -275,9 +298,10 @@ public class NaiveBayes
 			result = "No";
 		}
 		
+		// https://www.baeldung.com/java-round-decimal-number
 		// show the percentage of the result
-		System.out.println("Chances of tonsilitis is "+(probabilityYes*100)+"%");
-		System.out.println("Chances of no tonsilitis is "+(probabilityNo*100)+"%");
+		System.out.printf("\nChances of tonsilitis is %.3f\n", probabilityYes);
+		System.out.printf("Chances of no tonsilitis is %.3f\n", probabilityNo);
 		
 		return result;
 	}
@@ -326,7 +350,22 @@ public class NaiveBayes
 
 	public void setTonsilitisInput(String tonsilitisInput) {
 		this.tonsilitisInput = tonsilitisInput;
+	}
+
+	public float getProbabiltiyNo() {
+		return probabiltiyNo;
+	}
+
+	public void setProbabiltiyNo(float probabiltiyNo) {
+		this.probabiltiyNo = probabiltiyNo;
+	}
+
+	public float getProbabiltiyYes() {
+		return probabiltiyYes;
+	}
+
+	public void setProbabiltiyYes(float probabiltiyYes) {
+		this.probabiltiyYes = probabiltiyYes;
 	}	
-	
 	
 }
