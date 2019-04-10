@@ -9,37 +9,31 @@ import java.util.Map;
 
 public class NaiveBayes 
 {
-	private int totalCount; // amount of data inputted i.e. the data set in the excel file
-	private static Map<String, Integer> hm1; // store counts - https://www.geeksforgeeks.org/java-util-hashmap-in-java/
-	private static Map<String, Float> hm2; // store probabilities in floats - https://www.geeksforgeeks.org/java-util-hashmap-in-java/
+	private static Map<String, Integer> hm1; // store the counts - concept take from https://www.geeksforgeeks.org/java-util-hashmap-in-java/
+	private static Map<String, Float> hm2; // store the probabilities - concept take from https://www.geeksforgeeks.org/java-util-hashmap-in-java/
 	private String temperatureInput, soreThroatInput, achesInput, tonsilitisInput; // values inputed by user in the GUI
 	private DataProcessor dp;
-	private FileProcessor fp;
 	private ArrayList<Data> evalSet = new ArrayList<Data>();
-	private String[] optionString = { "No", "Yes" };
-	private String[] temperatureString = { "Hot", "Cool", "Normal" };
-	private float probabiltiyYes, probabiltiyNo;
+	private String[] optionString = { "No", "Yes" }; // options for aches and sore throat
+	private String[] temperatureString = { "Hot", "Cool", "Normal" }; // options for temperature
+	private float probabiltiyYes, probabiltiyNo; // probability of having tonsilitis or probability of not having tonsilitis
 	
 	NaiveBayes(String temperatureInput, String soreThroatInput, String achesInput)
 	{
-		// instantiate
+		// instantiate the hashmap and the processors
 		hm1 = new HashMap<>();
 		hm2 = new HashMap<>();
 		dp = new DataProcessor();
-		fp = new FileProcessor();
-		
-		// get the total data inputed
-		totalCount = fp.getDataCount();
 		
 		// get the users input from the GUI
 		this.temperatureInput = temperatureInput;
 		this.achesInput = achesInput;
 		this.soreThroatInput = soreThroatInput;
-				
-		// update the values count based on the data entered
+		
+		// get the various predictros count based on the data from the set and store in the hashmap
 		getCount();
 		
-		// calculate the probabilities
+		// calculate the probabilities from the count hashmap
 		calculateProbabilities();
 		
 	}
@@ -105,8 +99,8 @@ public class NaiveBayes
 			//  update aches & sore throats states count given tonsilitis
 			for(int j = 0; j < optionString.length; j++)
 			{
-				hm1.put("SoreThroat"+optionString[i]+" & Tonsilitis"+optionString[j], dp.getProbabilities("SoreThroat", optionString[i], optionString[j]));
-				hm1.put("Aches"+optionString[i]+" & Tonsilitis"+optionString[j], dp.getProbabilities("Aches", optionString[i], optionString[j]));
+				hm1.put("SoreThroat"+optionString[i]+" & Tonsilitis"+optionString[j], dp.getCountGivenTonsilitis("SoreThroat", optionString[i], optionString[j]));
+				hm1.put("Aches"+optionString[i]+" & Tonsilitis"+optionString[j], dp.getCountGivenTonsilitis("Aches", optionString[i], optionString[j]));
 			}
 		}
 		
@@ -118,7 +112,7 @@ public class NaiveBayes
 			// store all temperature states given tonsilitis
 			for(int j = 0; j < optionString.length; j++)
 			{
-				hm1.put(temperatureString[i]+" & Tonsilitis"+optionString[j],  dp.getTempProbabilities(temperatureString[i], optionString[j]));
+				hm1.put(temperatureString[i]+" & Tonsilitis"+optionString[j],  dp.getTempCountGivenTonsilitis(temperatureString[i], optionString[j]));
 			}
 		}
 	
@@ -127,93 +121,205 @@ public class NaiveBayes
 	
 
 	
-	// calculate probabilities -  https://javatutorial.net/java-iterate-hashmap-example  -  https://stackoverflow.com/questions/5067942/what-is-the-best-way-to-extract-the-first-word-from-a-string-in-java
+	// calculate probabilities
 	public void calculateProbabilities()
 	{			
 		// get the probability of everyone that had tonsilitis or no tonsiliits
-		hm2.put("TonsilitisYes", (float) hm1.get("TonsilitisYes") / totalCount);
-		hm2.put("TonsilitisNo", (float) hm1.get("TonsilitisNo") / totalCount);
+		hm2.put("TonsilitisYes", ( (float) hm1.get("TonsilitisYes") / dp.getTotalCount() ));
+		hm2.put("TonsilitisNo", ( (float) hm1.get("TonsilitisNo") / dp.getTotalCount() ));
 		
-		// get probability of sore throat, aches and temperature states
+		
+		// loop through the count hashmap
 		for(Map.Entry<String, Integer> entry : hm1.entrySet())
 		{
+			// START - https://stackoverflow.com/questions/5067942/what-is-the-best-way-to-extract-the-first-word-from-a-string-in-java
+			// get the key
 			String key = entry.getKey();
-			int value = entry.getValue();
-			String[] splitted = key.split(" ", 3);
-			String firstword = splitted[0];
 			
-			// if the key had 3 words i.e. had two predictors
+			// get the value of the key
+			int value = entry.getValue();
+			
+			// split the key into a max of 3 words
+			String[] splitted = key.split(" ", 3);
+			
+			// get the firstword of the splitted, which is the predictor
+			String firstword = splitted[0];
+			// END - https://stackoverflow.com/questions/5067942/what-is-the-best-way-to-extract-the-first-word-from-a-string-in-java
+			
+			
+			// if the key had 3 words, which implies they had 2 predictors e.g. "soreThroatNo & tonsilitisYes"
 			if(splitted.length == 3)
 			{
+				// the tonsilitis state
+				String tonsilitisState = splitted[2];
+				
+				
+				
+				// if the predictor is sore throat
 				if(firstword.contains("SoreThroat"))
 				{
+					// if the person had a sore throat e.g. firstword = "soreThroatYes"
 					if(firstword.contains("Yes"))
 					{
-						float probability = (float) value/hm1.get("SoreThroatYes");
-						hm2.put(key, probability);
+						// if the person had tonsilitis
+						if(tonsilitisState.contains("Yes"))
+						{
+							// divide the value of the entry by the people that had tonsilitis
+							float probability = (float) value/hm1.get("TonsilitisYes");
+							
+							// put the key and probability to the probability hashmap
+							hm2.put(key, probability);
+						}
+						// if the person had no tonsilitis
+						else
+						{
+							// divide the value of the entry by the people that had no tonsilitis
+							float probability = (float) value/hm1.get("TonsilitisNo");
+						
+							// put the key and probability to the probability hashmap
+							hm2.put(key, probability);
+						}
 					}
+					// if the person didnt have a sore throat  e.g. firstword = "soreThroat=No"
 					else if(firstword.contains("No"))
 					{
-						float probability = (float) value/hm1.get("SoreThroatNo");
-						hm2.put(key, probability);
+						// if the person had tonsilitis
+						if(tonsilitisState.contains("Yes"))
+						{
+							// divide the value of the entry by the people that had tonsilitis
+							float probability = (float) value/hm1.get("TonsilitisYes");
+							
+							// put the key and probability to the probability hashmap
+							hm2.put(key, probability);
+						}
+						// if the person had no tonsilitis
+						else
+						{
+							// divide the value of the entry by the people that had no tonsilitis
+							float probability = (float) value/hm1.get("TonsilitisNo");
+						
+							// put the key and probability to the probability hashmap
+							hm2.put(key, probability);
+						}
 					}
 						
 				}
+				
+				
+				
+				// if the predictor is aches
 				else if(firstword.contains("Aches"))
 				{
+					// if the person had aches
 					if(firstword.contains("Yes"))
 					{
-						float probability = (float) value/hm1.get("AchesYes");
-						hm2.put(key, probability);
+						// if the person had tonsilitis
+						if(tonsilitisState.contains("Yes"))
+						{
+							// divide the value of the entry by the people that had tonsilitis
+							float probability = (float) value/hm1.get("TonsilitisYes");
+							
+							// put the key and probability to the probability hashmap
+							hm2.put(key, probability);
+						}
+						// if the person had no tonsilitis
+						else
+						{
+							// divide the value of the entry by the people that had no tonsilitis
+							float probability = (float) value/hm1.get("TonsilitisNo");
+						
+							// put the key and probability to the probability hashmap
+							hm2.put(key, probability);
+						}
 					}
+					// if the person had no aches
 					else if(firstword.contains("No"))
 					{
-						float probability = (float) value/hm1.get("AchesNo");
-						hm2.put(key, probability);
+						// if the person had tonsilitis
+						if(tonsilitisState.contains("Yes"))
+						{
+							// divide the value of the entry by the people that had tonsilitis
+							float probability = (float) value/hm1.get("TonsilitisYes");
+							
+							// put the key and probability to the probability hashmap
+							hm2.put(key, probability);
+						}
+						// if the person had no tonsilitis
+						else
+						{
+							// divide the value of the entry by the people that had no tonsilitis
+							float probability = (float) value/hm1.get("TonsilitisNo");
+						
+							// put the key and probability to the probability hashmap
+							hm2.put(key, probability);
+						}
 					}
 				}
+				
+				
+				// if temperature predictor is hot
 				else if(firstword.contains("Hot"))
 				{
-					String tempword = splitted[2];
-					
-					if(tempword.contains("Yes"))
+					// if the person had tonsilitis
+					if(tonsilitisState.contains("Yes"))
 					{
-						float probability = (float) value/hm1.get("Hot");
+						// divide the value of the entry by the people that had tonsilitis
+						float probability = (float) value/hm1.get("TonsilitisYes");
+						
+						// put the key and probability to the probability hashmap
 						hm2.put(key, probability);
 					}
-					else if(tempword.contains("No"))
+					// if the person had no tonsilitis
+					else
 					{
-						float probability = (float) value/hm1.get("Hot");
+						// divide the value of the entry by the people that had no tonsilitis
+						float probability = (float) value/hm1.get("TonsilitisNo");
+					
+						// put the key and probability to the probability hashmap
 						hm2.put(key, probability);
 					}
 				}
+				// if temperature predictor is normal
 				else if(firstword.contains("Normal"))
 				{
-					String tempword = splitted[2];
-					
-					if(tempword.contains("Yes"))
+					// if the person had tonsilitis
+					if(tonsilitisState.contains("Yes"))
 					{
-						float probability = (float) value/hm1.get("Normal");
+						// divide the value of the entry by the people that had tonsilitis
+						float probability = (float) value/hm1.get("TonsilitisYes");
+						
+						// put the key and probability to the probability hashmap
 						hm2.put(key, probability);
 					}
-					else if(tempword.contains("No"))
+					// if the person had no tonsilitis
+					else
 					{
-						float probability = (float) value/hm1.get("Normal");
+						// divide the value of the entry by the people that had no tonsilitis
+						float probability = (float) value/hm1.get("TonsilitisNo");
+					
+						// put the key and probability to the probability hashmap
 						hm2.put(key, probability);
 					}
 				}
+				// if temperature predictor is cool
 				else if(firstword.contains("Cool"))
 				{
-					String tempword = splitted[2];
-					
-					if(tempword.contains("Yes"))
+					// if the person had tonsilitis
+					if(tonsilitisState.contains("Yes"))
 					{
-						float probability = (float) value/hm1.get("Cool");
+						// divide the value of the entry by the people that had tonsilitis
+						float probability = (float) value/hm1.get("TonsilitisYes");
+						
+						// put the key and probability to the probability hashmap
 						hm2.put(key, probability);
 					}
-					else if(tempword.contains("No"))
+					// if the person had no tonsilitis
+					else
 					{
-						float probability = (float) value/hm1.get("Cool");
+						// divide the value of the entry by the people that had no tonsilitis
+						float probability = (float) value/hm1.get("TonsilitisNo");
+					
+						// put the key and probability to the probability hashmap
 						hm2.put(key, probability);
 					}
 				}
@@ -279,7 +385,8 @@ public class NaiveBayes
 			StInput = hm2.get("SoreThroatNo & TonsilitisYes");
 			OppSt = hm2.get("SoreThroatNo & TonsilitisNo");
 		}
-		
+
+		System.out.println("Yes: "+TInput+"*"+StInput+"*"+AInput+"*"+hm2.get("TonsilitisYes"));
 		probabilityYes = (TInput * StInput * AInput * hm2.get("TonsilitisYes"));
 		probabilityNo = (OppT * OppSt * OppA * hm2.get("TonsilitisNo"));
 		

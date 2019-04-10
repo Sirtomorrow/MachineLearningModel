@@ -3,7 +3,7 @@
 
 package com.tonsilitis.assignment;
 
-// Plain Old Java Object
+// Plain Old Java Object [POJO]
 public class Data 
 {
 	private String temperature;
@@ -11,6 +11,7 @@ public class Data
 	private String soreThroat;
 	private String tonsilitis;
 	
+	// constructor
 	Data(String temperature, String aches, String soreThroat, String tonsilitis)
 	{
 		this.setTemperature(temperature);
