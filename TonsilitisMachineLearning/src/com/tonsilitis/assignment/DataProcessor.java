@@ -10,7 +10,7 @@ public class DataProcessor
 	private ArrayList<Data> trainingSet = new ArrayList<Data>(); // list of the training data instances
 	private ArrayList<Data> evalSet = new ArrayList<Data>(); // list of the evaluation data instances
 	private FileProcessor fp = new FileProcessor();
-	private int totalCount; 
+	private int totalCount;  // the total count of the training set
 	private String trainingFile = "datainput.csv"; // training file
 	private String evaluationFile = "evaluateinput.csv"; // evaluation file
 	
@@ -49,7 +49,7 @@ public class DataProcessor
 	}
 	
 	
-	// get the count of all the temperature states i.e people who were cool, normal or hot
+	// get the count of all the temperature states i.e cool, normal or hot
 	public int getTemperatureCount(String state)
 	{
 		int count = 0;
@@ -60,8 +60,7 @@ public class DataProcessor
 			// if the temperature of the instance matches the state 
 			if(d.getTemperature().equals(state))
 			{
-				
-				// increment by 1
+				// increment
 				count++;
 			}
 		}
@@ -82,8 +81,7 @@ public class DataProcessor
 			// if aches of the instance matches the state
 			if(d.getAches().equals(state))
 			{
-				
-				// increment by 1
+				// increment
 				count++;
 			}
 		}
@@ -104,8 +102,7 @@ public class DataProcessor
 			// if sore throat instance matches the state
 			if(d.getSoreThroat().equals(state))
 			{
-				
-				// increment by 1
+				// increment
 				count++;
 			}
 		}
@@ -136,7 +133,7 @@ public class DataProcessor
 	}
 
 	
-	// get the count of aches or sore throat states given tonsilitis state, e.g. aches=Yes & tonsilitis=No
+	// get the count of temperature, aches or sore throat states given tonsilitis state, e.g. aches=Yes & tonsilitis=No
 	public int getCountGivenTonsilitis(String predictor, String predictorState, String tonsilitisState)
 	{
 		int count = 0;
@@ -172,67 +169,59 @@ public class DataProcessor
 				}
 			}
 		}
-		
-		// return the count result
-		return count;
-	}
-	
-	// get the count of temperature states given tonsilitis state
-	public int getTempCountGivenTonsilitis(String predictor, String tonsilitisState)
-	{
-		int count = 0;
-		
-		// if the predictor is hot
-		if(predictor.equals("Hot"))
+		else if(predictor.equals("Temperature"))
 		{
-			
-			// loop through the trainingSet
-			for(Data d: trainingSet)
+			// if the predictor state is hot
+			if(predictorState.equals("Hot"))
 			{
-				// if tonsilitis state matches hot, e.g. tonsilitis=Yes & temperature=Hot
-				if(d.getTemperature().equals("Hot") && d.getTonsilitis().equals(tonsilitisState))
+				
+				// loop through the trainingSet
+				for(Data d: trainingSet)
 				{
-					// increment the count
-					count++;
+					// if tonsilitis state matches hot, e.g. tonsilitis=Yes & temperature=Hot
+					if(d.getTemperature().equals(predictorState) && d.getTonsilitis().equals(tonsilitisState))
+					{
+						// increment the count
+						count++;
+					}
+				}
+				
+			}
+			// if the predictor state is normal
+			else if(predictorState.equals("Normal"))
+			{
+				
+				// loop through the trainingSet
+				for(Data d: trainingSet)
+				{
+					// if tonsilitis state matches normal, e.g. tonsilitis=Yes & temperature=Normal
+					if(d.getTemperature().equals(predictorState) && d.getTonsilitis().equals(tonsilitisState))
+					{
+						// increment count
+						count++;
+					}
 				}
 			}
-			
-		}
-		// if the predictor is normal
-		else if(predictor.equals("Normal"))
-		{
-			
-			// loop through the trainingSet
-			for(Data d: trainingSet)
+			// if the predictor state is cool
+			else if(predictorState.equals("Cool"))
 			{
-				// if tonsilitis state matches normal, e.g. tonsilitis=Yes & temperature=Normal
-				if(d.getTemperature().equals("Normal") && d.getTonsilitis().equals(tonsilitisState))
+				
+				// loop through the trainingSet
+				for(Data d: trainingSet)
 				{
-					// increment count
-					count++;
-				}
+					// if tonsilitis state matches cool, e.g. tonsilitis=Yes & temperature=Cool
+					if(d.getTemperature().equals(predictorState) && d.getTonsilitis().equals(tonsilitisState))
+					{
+						// increment count
+						count++;
+					}
+				} 
 			}
-		}
-		// if the predictor is cool
-		else if(predictor.equals("Cool"))
-		{
-			
-			// loop through the trainingSet
-			for(Data d: trainingSet)
-			{
-				// if tonsilitis state matches cool, e.g. tonsilitis=Yes & temperature=Cool
-				if(d.getTemperature().equals("Cool") && d.getTonsilitis().equals(tonsilitisState))
-				{
-					// increment count
-					count++;
-				}
-			} 
 		}
 		
 		// return the count result
 		return count;
 	}
-
 
 	public int getTotalCount() {
 		return totalCount;

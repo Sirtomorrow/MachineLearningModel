@@ -11,8 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 
 public class GUI extends JFrame implements ActionListener 
 {
@@ -83,7 +81,7 @@ public class GUI extends JFrame implements ActionListener
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 	}
 	
-	
+	// if button is pressed
 	public void actionPerformed(ActionEvent event) 
 	{
 		// if submit button is pressed
@@ -98,7 +96,7 @@ public class GUI extends JFrame implements ActionListener
 			//  and insert the input to the classifier
 			nb = new NaiveBayes(temperatureInput, achesInput, soreThroatInput);
 			
-			// get the result of tonsilitis in the form of "Yes" or "No"
+			// get the result of tonsilitis in the form of a string "Yes" or "No"
 			String result = nb.calculateTonsilitis();
 					
 			// show result

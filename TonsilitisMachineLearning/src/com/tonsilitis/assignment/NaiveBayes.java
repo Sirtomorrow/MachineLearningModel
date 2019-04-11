@@ -30,7 +30,7 @@ public class NaiveBayes
 		this.achesInput = achesInput;
 		this.soreThroatInput = soreThroatInput;
 		
-		// get the various predictros count based on the data from the set and store in the hashmap
+		// get the various predictors count based on the data from the set and store in the hashmap
 		getCount();
 		
 		// calculate the probabilities from the count hashmap
@@ -41,8 +41,8 @@ public class NaiveBayes
 	// evaluate the evaluation set
 	public float getEvaluation()
 	{	
-		float result = 0;
-		int correct = 0;
+		float result = 0; // probability of correct rows based on the evaluation results
+		int correct = 0; // amount of correct rows
 		String tonsilitisResult;
 		
 		// evaluationSet
@@ -63,13 +63,16 @@ public class NaiveBayes
 			// expected tonsilitis outcome
 			System.out.println("\nExpected tonsilitis outcome: "+getTonsilitisInput());
 			
+			// get the result of the NaiveBayes calculations i.e. has tonsilitis or no tonsilitis
 			tonsilitisResult = calculateTonsilitis();
 			
 			// calculate chances of tonsilitis
 			System.out.println("Actual tonsilitis outcome: "+tonsilitisResult+"\n");
 			
+			// if the tonsilitis given matches the result
 			if(getTonsilitisInput().equals(tonsilitisResult))
 			{
+				// increment
 				correct++;
 			}
 		}
@@ -88,31 +91,35 @@ public class NaiveBayes
 	// get the count of the keys/predictors
 	public void getCount()
 	{
-		
-		// update sore throat, tonsilitis and aches count values
+		// get sore throat, tonsilitis and aches count values
 		for(int i = 0; i < optionString.length; i++)
 		{
+			// get the counts of the predictors based on the states i.e. yes/no
 			hm1.put("SoreThroat"+optionString[i], dp.getSoreThroatCount(optionString[i]));
 			hm1.put("Aches"+optionString[i], dp.getAchesCount(optionString[i]));
 			hm1.put("Tonsilitis"+optionString[i], dp.getTonsilitisCount(optionString[i]));
 			
-			//  update aches & sore throats states count given tonsilitis
+			//  get aches & sore throats states count given tonsilitis
 			for(int j = 0; j < optionString.length; j++)
 			{
+				// get counts of the predictors given tonsilitis
 				hm1.put("SoreThroat"+optionString[i]+" & Tonsilitis"+optionString[j], dp.getCountGivenTonsilitis("SoreThroat", optionString[i], optionString[j]));
 				hm1.put("Aches"+optionString[i]+" & Tonsilitis"+optionString[j], dp.getCountGivenTonsilitis("Aches", optionString[i], optionString[j]));
 			}
 		}
 		
-		// update the temperature count values
+		// get the temperature count values
+		// loop through temperature states
 		for(int i = 0; i < temperatureString.length; i++)
 		{
+			// get temperature count for different statess
 			hm1.put(temperatureString[i], dp.getTemperatureCount(temperatureString[i]));
 			
-			// store all temperature states given tonsilitis
+			// loop thorugh temperature states gvien tonsilitis
 			for(int j = 0; j < optionString.length; j++)
 			{
-				hm1.put(temperatureString[i]+" & Tonsilitis"+optionString[j],  dp.getTempCountGivenTonsilitis(temperatureString[i], optionString[j]));
+				// get counts of the predictors given tonsilitis
+				hm1.put(temperatureString[i]+" & Tonsilitis"+optionString[j],  dp.getCountGivenTonsilitis("Temperature",temperatureString[i], optionString[j]));
 			}
 		}
 	
@@ -152,8 +159,6 @@ public class NaiveBayes
 			{
 				// the tonsilitis state
 				String tonsilitisState = splitted[2];
-				
-				
 				
 				// if the predictor is sore throat
 				if(firstword.contains("SoreThroat"))
@@ -336,71 +341,133 @@ public class NaiveBayes
 		String result = "";
 		Float probabilityYes = null, 
 			  probabilityNo = null, 
-			  TInput = null, 
-			  StInput = null, 
-			  AInput = null, 
-			  OppT = null, 
-			  OppSt = null, 
-			  OppA = null;
+			  temperatureYes = null, 
+			  soreThroatYes = null, 
+			  achesYes = null, 
+			  temperatureNo = null, 
+			  soreThroatNo = null, 
+			  achesNo = null;
 		
 		// check what the user's temperature input is
 		if(temperatureInput.equals("Hot"))
 		{
-			TInput = hm2.get("Hot & TonsilitisYes");
-			OppT =  hm2.get("Hot & TonsilitisNo");
+			temperatureYes = hm2.get("Hot & TonsilitisYes");
+			temperatureNo =  hm2.get("Hot & TonsilitisNo");
+			
+			// if any of the input is 0, set to 1
+			if(temperatureYes == 0)
+			{
+				temperatureYes = (float) 1;			
+			}
+			else if(temperatureNo == 0)
+			{
+				temperatureNo = (float) 1;
+			}
+			
 		}
 		else if(temperatureInput.equals("Normal"))
 		{
-			TInput = hm2.get("Normal & TonsilitisYes");
-			OppT =  hm2.get("Normal & TonsilitisNo");
+			temperatureYes = hm2.get("Normal & TonsilitisYes");
+			temperatureNo =  hm2.get("Normal & TonsilitisNo");
+			
+			// if any of the input is 0, set to 1
+			if(temperatureYes == 0)
+			{
+				temperatureYes = (float) 1;		
+			}
+			else if(temperatureNo == 0)
+			{
+				temperatureNo = (float) 1;
+			}
 		}
 		else if(temperatureInput.equals("Cool"))
 		{
-			TInput = hm2.get("Cool & TonsilitisYes");
-			OppT =  hm2.get("Cool & TonsilitisNo");
+			temperatureYes = hm2.get("Cool & TonsilitisYes");
+			temperatureNo =  hm2.get("Cool & TonsilitisNo");
+			// if any of the input is 0, set to 1
+			if(temperatureYes == 0)
+			{
+				temperatureYes = (float) 1;		
+			}
+			else if(temperatureNo == 0)
+			{
+				temperatureNo = (float) 1;
+			}
 		}
 		
 		
 		// check what the user's aches input is
 		if(achesInput.equals("Yes"))
 		{
-			AInput = hm2.get("AchesYes & TonsilitisYes");
-			OppA = 	hm2.get("AchesYes & TonsilitisNo");
+			achesYes = hm2.get("AchesYes & TonsilitisYes");
+			achesNo = 	hm2.get("AchesYes & TonsilitisNo");
+			
+			// if any of the input is 0, set to 1
+			if(achesYes == 0)
+			{
+				achesYes = (float) 1;		
+			}
+			else if(achesNo == 0)
+			{
+				achesNo = (float) 1;
+			}
 		}
 		else if(achesInput.equals("No"))
 		{
-			AInput = hm2.get("AchesNo & TonsilitisYes");
-			OppA = 	hm2.get("AchesNo & TonsilitisNo");
+			achesYes = hm2.get("AchesNo & TonsilitisYes");
+			achesNo = 	hm2.get("AchesNo & TonsilitisNo");
+			
+			// if any of the input is 0, set to 1
+			if(achesYes == 0)
+			{
+				achesYes = (float) 1;		
+			}
+			else if(achesNo == 0)
+			{
+				achesNo = (float) 1;
+			}
 		}
 		
 		
 		// check what the user's sore throat input is
 		if(soreThroatInput.equals("Yes"))
 		{
-			StInput = hm2.get("SoreThroatYes & TonsilitisYes");
-			OppSt = hm2.get("SoreThroatYes & TonsilitisNo");
+			soreThroatYes = hm2.get("SoreThroatYes & TonsilitisYes");
+			soreThroatNo = hm2.get("SoreThroatYes & TonsilitisNo");
+			
+			// if any of the input is 0, set to 1
+			if(soreThroatYes == 0)
+			{
+				soreThroatYes = (float) 1;		
+			}
+			else if(soreThroatNo == 0)
+			{
+				soreThroatNo = (float) 1;
+			}
 		}
 		else if(soreThroatInput.equals("No"))
 		{
-			StInput = hm2.get("SoreThroatNo & TonsilitisYes");
-			OppSt = hm2.get("SoreThroatNo & TonsilitisNo");
+			soreThroatYes = hm2.get("SoreThroatNo & TonsilitisYes");
+			soreThroatNo = hm2.get("SoreThroatNo & TonsilitisNo");
+			
+			// if any of the input is 0, set to 1
+			if(soreThroatYes == 0)
+			{
+				soreThroatYes = (float) 1;		
+			}
+			else if(soreThroatNo == 0)
+			{
+				soreThroatNo = (float) 1;
+			}
 		}
 
-		System.out.println("Yes: "+TInput+"*"+StInput+"*"+AInput+"*"+hm2.get("TonsilitisYes"));
-		probabilityYes = (TInput * StInput * AInput * hm2.get("TonsilitisYes"));
-		probabilityNo = (OppT * OppSt * OppA * hm2.get("TonsilitisNo"));
+			
+		// calculate the probability of having tonsilits & not having tonsilitis
+		probabilityYes = (temperatureYes * soreThroatYes * achesYes * hm2.get("TonsilitisYes"));
+		probabilityNo = (temperatureNo * soreThroatNo * achesNo * hm2.get("TonsilitisNo"));
+		System.out.println("probabilityYes: "+temperatureYes+"*"+soreThroatYes+"*"+achesYes+"*"+hm2.get("TonsilitisYes"));
+		System.out.println("probabilityNo: "+temperatureNo+"*"+soreThroatNo+"*"+achesNo+"*"+hm2.get("TonsilitisNo"));
 		
-		// in case of null value
-		if(probabilityYes == 0)
-		{
-			probabilityNo = (OppT * OppSt * OppA * hm2.get("TonsilitisNo"));
-			probabilityNo = probabilityNo * 1;
-		}
-		else if(probabilityNo == 0)
-		{
-			probabilityYes = (TInput * StInput * AInput * hm2.get("TonsilitisYes"));
-			probabilityYes = probabilityYes * 1;
-		}
 
 		// print out to user
 		if(probabilityYes > probabilityNo)

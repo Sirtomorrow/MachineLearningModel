@@ -30,14 +30,14 @@ public class FileProcessor
 			// change delimiter to read in the .csv file
 			fileScanner.useDelimiter(",|\r\n");
 			
-			// skip the first line, first line are only the headers/title 
+			// skip the first line, first line are only the headers/title e.g. temperature, aches, sore throat etc.
 			fileScanner.nextLine();
 
 		}
 		// handling for file if file not found
 		catch (FileNotFoundException event) 
 		{
-			// if file not found, notify user
+			// if file not found, notify user 
 			System.out.println("File not found");
 		}
 		
@@ -54,7 +54,7 @@ public class FileProcessor
 			soreThroatToken = fileScanner.next();
 			tonsilitisToken = fileScanner.next();
 			
-			// if evaluating, i.e the evaluation file
+			// if evaluating the file, i.e the evaluation file
 			if(filename.equals("evaluateinput.csv"))
 			{
 				// instantiate the data
