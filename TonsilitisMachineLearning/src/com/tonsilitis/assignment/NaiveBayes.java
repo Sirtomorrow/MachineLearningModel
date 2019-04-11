@@ -57,12 +57,12 @@ public class NaiveBayes
 			setTemperatureInput(evalSet.get(i).getTemperature());
 			setTonsilitisInput(evalSet.get(i).getTonsilitis());
 			
-			System.out.println("Evaluating ...   Temperature="+getTemperatureInput()+
+			System.out.println("\nEvaluating ...   Temperature="+getTemperatureInput()+
 											   "   Aches="+getAchesInput()+
 											   "   SoreThroat="+getSoreThroatInput());
 			
 			// expected tonsilitis outcome
-			System.out.println("\nExpected tonsilitis outcome: "+getTonsilitisInput());
+			System.out.print("\nExpected tonsilitis outcome: "+getTonsilitisInput());
 			
 			// get the result of the NaiveBayes calculations i.e. has tonsilitis or no tonsilitis
 			tonsilitisResult = calculateTonsilitis();
@@ -467,11 +467,11 @@ public class NaiveBayes
 		// calculate the probability of having tonsilits & not having tonsilitis
 		probabilityYes = (temperatureYes * soreThroatYes * achesYes * hm2.get("TonsilitisYes"));
 		probabilityNo = (temperatureNo * soreThroatNo * achesNo * hm2.get("TonsilitisNo"));
-		System.out.println("probabilityYes: "+temperatureYes+"*"+soreThroatYes+"*"+achesYes+"*"+hm2.get("TonsilitisYes"));
-		System.out.println("probabilityNo: "+temperatureNo+"*"+soreThroatNo+"*"+achesNo+"*"+hm2.get("TonsilitisNo"));
 		
+		// get the total of the probabilities
 		total = probabilityYes + probabilityNo;
 		
+		// set the percentages
 		setPercentageYes( probabilityYes / total);
 		setPercentageNo( probabilityNo / total);
 		
@@ -492,7 +492,6 @@ public class NaiveBayes
 		
 		return result;
 	}
-	
 	
 	
 	// getters & setters

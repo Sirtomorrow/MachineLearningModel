@@ -14,7 +14,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GUI extends JFrame implements ActionListener, ItemListener 
@@ -22,12 +21,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 	private JLabel label1, label2, label3, label4, label5;
 	private	JComboBox<String> tempBox, achesBox, soreThroatBox;
 	private JPanel panel1, panel2, panel3, panel4, panel5, panel6;
-	private JButton submit_button, eval_button;
+	private JButton submitButton, evaluationButton;
 	private JCheckBox cb1;
 	private String[] optionString = { "No", "Yes" }; // options for sore throat and aches
 	private String[] temperatureString = { "Hot", "Cool", "Normal" }; // options for temperature
 	private String temperatureInput, soreThroatInput, achesInput; // the users input
 	private NaiveBayes nb = new NaiveBayes("Hot", "No", "No"); // default settings; initially setup the training set
+	public static final Color DARK = new Color(0, 0, 30); // http://teaching.csse.uwa.edu.au/units/CITS1001/colorinfo.html
 	
 	public GUI()
 	{
@@ -41,6 +41,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 		label4 = new JLabel("TONSILTIS TESTER");
 		label5 = new JLabel("");
 		label5.setVisible(false);
+		label1.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+		label2.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+		label3.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 		label4.setFont(new Font("Comic Sans MS", Font.BOLD, 36));
 		label5.setFont(new Font("Calibri", Font.BOLD, 18));
 		
@@ -51,6 +54,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 		tempBox.setPreferredSize(new Dimension(200, 50)); // set size of buttons
 		achesBox.setPreferredSize(new Dimension(240, 50));
 		soreThroatBox.setPreferredSize(new Dimension(210, 50));
+		tempBox.setBackground(Color.WHITE); // set colors
+		achesBox.setBackground(Color.WHITE);
+		soreThroatBox.setBackground(Color.WHITE);
 		
 		// instantiate panels
 		panel1 = new JPanel();
@@ -59,19 +65,22 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 		panel4 = new JPanel();
 		panel5 = new JPanel();
 		panel6 = new JPanel();
-		
+
+		// instantiate checkboxes
 		cb1 = new JCheckBox("Dark mode");
 		cb1.setSelected(false);
 		
 		// instantiate buttons
-		submit_button = new JButton("Submit");
-		eval_button = new JButton("Evaluate");
-		submit_button.setPreferredSize(new Dimension(150, 50)); // set size of buttons
-		eval_button.setPreferredSize(new Dimension(150, 50));
+		submitButton = new JButton("Submit");
+		evaluationButton = new JButton("Evaluate");
+		submitButton.setPreferredSize(new Dimension(150, 50)); // set size of buttons
+		evaluationButton.setPreferredSize(new Dimension(150, 50));
+		submitButton.setBackground(Color.WHITE); // set colors
+		evaluationButton.setBackground(Color.WHITE); 
 		
 		// add action listeners to the buttons and combo boxes
-		submit_button.addActionListener(this);
-		eval_button.addActionListener(this);
+		submitButton.addActionListener(this);
+		evaluationButton.addActionListener(this);
 		tempBox.addActionListener(this);
 		achesBox.addActionListener(this);
 		soreThroatBox.addActionListener(this);
@@ -84,11 +93,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 		panel2.add(achesBox);
 		panel3.add(label3);
 		panel3.add(soreThroatBox);
-		panel4.add(submit_button);
-		panel4.add(eval_button);
+		panel4.add(submitButton);
+		panel4.add(evaluationButton);
 		panel5.add(label4);
 		panel6.add(label5);
-		panel6.add(cb1);
+		panel4.add(cb1);
 		add(panel5);
 		add(panel1);
 		add(panel2);
@@ -102,15 +111,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 		setVisible(true);
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		// https://stackoverflow.com/questions/1081486/setting-background-color-for-the-jframe
-		// getContentPane().setBackground(Color.BLACK);
 	}
 	
 	// if button is pressed
 	public void actionPerformed(ActionEvent event) 
 	{
 		// if submit button is pressed
-		if(event.getSource() == submit_button)
+		if(event.getSource() == submitButton)
 		{			
 			// get the values given by the user through the combo box
 			setTemperatureInput(tempBox.getSelectedItem().toString());
@@ -141,7 +148,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 
 		}
 		// if evaluate button is pressed
-		else if(event.getSource() == eval_button)
+		else if(event.getSource() == evaluationButton)
 		{
 			// the accuracy of the program based on the evaluation results
 			float evaluationAccuracy;
@@ -155,13 +162,77 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 		}
 	}
 	
-	@Override
+
 	public void itemStateChanged(ItemEvent event) 
 	{
-		// TODO Auto-generated method stub
+		
+
 		if(event.getItemSelectable() == cb1)
 		{
+			if(cb1.isSelected() == true)
+			{
+				// change the color of panels and foreground
+				panel1.setBackground(DARK);
+				panel1.setBackground(DARK);
+				panel2.setBackground(DARK);
+				panel3.setBackground(DARK);
+				panel4.setBackground(DARK);
+				panel5.setBackground(DARK);
+				panel6.setBackground(DARK);
+				getContentPane().setBackground(DARK);
 				
+				// change the color of combo boxes
+				tempBox.setBackground(Color.GRAY);
+				achesBox.setBackground(Color.GRAY);
+				soreThroatBox.setBackground(Color.GRAY);
+				
+				// change color of buttons
+				submitButton.setBackground(Color.GRAY);
+				evaluationButton.setBackground(Color.GRAY);	
+				
+				// change font colors
+				label1.setForeground(Color.WHITE);
+				label2.setForeground(Color.WHITE);
+				label3.setForeground(Color.WHITE);
+				label4.setForeground(Color.WHITE);
+				label5.setForeground(Color.WHITE);
+				
+				// change check box color
+				cb1.setBackground(DARK);
+				cb1.setForeground(Color.WHITE);
+			}
+			else
+			{
+				// change the color of panels and foreground
+				panel1.setBackground(Color.WHITE);
+				panel1.setBackground(Color.WHITE);
+				panel2.setBackground(Color.WHITE);
+				panel3.setBackground(Color.WHITE);
+				panel4.setBackground(Color.WHITE);
+				panel5.setBackground(Color.WHITE);
+				panel6.setBackground(Color.WHITE);
+				getContentPane().setBackground(Color.WHITE);
+				
+				// change the color of combo boxes
+				tempBox.setBackground(Color.WHITE);
+				achesBox.setBackground(Color.WHITE);
+				soreThroatBox.setBackground(Color.WHITE);
+				
+				// change color of buttons
+				submitButton.setBackground(Color.WHITE);
+				evaluationButton.setBackground(Color.WHITE);
+				
+				// change font colors
+				label1.setForeground(Color.BLACK);
+				label2.setForeground(Color.BLACK);
+				label3.setForeground(Color.BLACK);
+				label4.setForeground(Color.BLACK);
+				label5.setForeground(Color.BLACK);
+				
+				// change check box color
+				cb1.setBackground(Color.WHITE);
+				cb1.setForeground(Color.BLACK);
+			}
 			
 		}
 		
