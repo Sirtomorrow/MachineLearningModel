@@ -1,24 +1,29 @@
 package com.tonsilitis.assignment;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class GUI extends JFrame implements ActionListener 
+public class GUI extends JFrame implements ActionListener, ItemListener 
 {
 	private JLabel label1, label2, label3, label4, label5;
 	private	JComboBox<String> tempBox, achesBox, soreThroatBox;
 	private JPanel panel1, panel2, panel3, panel4, panel5, panel6;
 	private JButton submit_button, eval_button;
+	private JCheckBox cb1;
 	private String[] optionString = { "No", "Yes" }; // options for sore throat and aches
 	private String[] temperatureString = { "Hot", "Cool", "Normal" }; // options for temperature
 	private String temperatureInput, soreThroatInput, achesInput; // the users input
@@ -37,7 +42,7 @@ public class GUI extends JFrame implements ActionListener
 		label5 = new JLabel("");
 		label5.setVisible(false);
 		label4.setFont(new Font("Comic Sans MS", Font.BOLD, 36));
-		label5.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
+		label5.setFont(new Font("Calibri", Font.BOLD, 18));
 		
 		// instantiate combo boxes
 		tempBox = new JComboBox<String>(temperatureString);
@@ -55,6 +60,9 @@ public class GUI extends JFrame implements ActionListener
 		panel5 = new JPanel();
 		panel6 = new JPanel();
 		
+		cb1 = new JCheckBox("Dark mode");
+		cb1.setSelected(false);
+		
 		// instantiate buttons
 		submit_button = new JButton("Submit");
 		eval_button = new JButton("Evaluate");
@@ -67,6 +75,7 @@ public class GUI extends JFrame implements ActionListener
 		tempBox.addActionListener(this);
 		achesBox.addActionListener(this);
 		soreThroatBox.addActionListener(this);
+		cb1.addItemListener(this);
 		
 		// add components to panels, then add panels
 		panel1.add(label1);
@@ -79,6 +88,7 @@ public class GUI extends JFrame implements ActionListener
 		panel4.add(eval_button);
 		panel5.add(label4);
 		panel6.add(label5);
+		panel6.add(cb1);
 		add(panel5);
 		add(panel1);
 		add(panel2);
@@ -88,9 +98,12 @@ public class GUI extends JFrame implements ActionListener
 		
 		// set the screens layout
 		setLocation(400,100);
-		setSize(500, 600);
+		setSize(500, 500);
 		setVisible(true);
 		setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		// https://stackoverflow.com/questions/1081486/setting-background-color-for-the-jframe
+		// getContentPane().setBackground(Color.BLACK);
 	}
 	
 	// if button is pressed
@@ -141,6 +154,21 @@ public class GUI extends JFrame implements ActionListener
 			label5.setVisible(true);
 		}
 	}
+	
+	@Override
+	public void itemStateChanged(ItemEvent event) 
+	{
+		// TODO Auto-generated method stub
+		if(event.getItemSelectable() == cb1)
+		{
+				
+			
+		}
+		
+	}
+	
+	
+	
 
 	// getters & setters
 	public String getTemperatureInput() 
@@ -173,5 +201,6 @@ public class GUI extends JFrame implements ActionListener
 		this.achesInput = achesInput;
 	}
 	
-	
 }
+
+
