@@ -13,6 +13,7 @@ public class NaiveBayes
 	private static Map<String, Float> hm2; // store the probabilities - concept take from https://www.geeksforgeeks.org/java-util-hashmap-in-java/
 	private String temperatureInput, soreThroatInput, achesInput, tonsilitisInput; // values inputed by user in the GUI
 	private DataProcessor dp;
+	private float	 percentageYes, percentageNo; // percentage of the yes tonsilitis or no tonsilitis
 	private ArrayList<Data> evalSet = new ArrayList<Data>();
 	private String[] optionString = { "No", "Yes" }; // options for aches and sore throat
 	private String[] temperatureString = { "Hot", "Cool", "Normal" }; // options for temperature
@@ -346,7 +347,8 @@ public class NaiveBayes
 			  achesYes = null, 
 			  temperatureNo = null, 
 			  soreThroatNo = null, 
-			  achesNo = null;
+			  achesNo = null,
+			  total = null;
 		
 		// check what the user's temperature input is
 		if(temperatureInput.equals("Hot"))
@@ -468,7 +470,11 @@ public class NaiveBayes
 		System.out.println("probabilityYes: "+temperatureYes+"*"+soreThroatYes+"*"+achesYes+"*"+hm2.get("TonsilitisYes"));
 		System.out.println("probabilityNo: "+temperatureNo+"*"+soreThroatNo+"*"+achesNo+"*"+hm2.get("TonsilitisNo"));
 		
-
+		total = probabilityYes + probabilityNo;
+		
+		setPercentageYes( probabilityYes / total);
+		setPercentageNo( probabilityNo / total);
+		
 		// print out to user
 		if(probabilityYes > probabilityNo)
 		{
@@ -547,6 +553,26 @@ public class NaiveBayes
 
 	public void setProbabiltiyYes(float probabiltiyYes) {
 		this.probabiltiyYes = probabiltiyYes;
+	}
+
+	public Float getPercentageYes() 
+	{
+		return percentageYes*100;
+	}
+
+	public void setPercentageYes(Float percentageYes) 
+	{
+		this.percentageYes = percentageYes;
+	}
+	
+	public Float getPercentageNo() 
+	{
+		return percentageNo*100;
+	}
+
+	public void setPercentageNo(Float percentageNo) 
+	{
+		this.percentageNo = percentageNo;
 	}	
 	
 }

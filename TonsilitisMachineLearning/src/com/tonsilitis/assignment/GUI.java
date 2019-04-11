@@ -2,6 +2,7 @@ package com.tonsilitis.assignment;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,9 +15,9 @@ import javax.swing.JPanel;
 
 public class GUI extends JFrame implements ActionListener 
 {
-	private JLabel label1, label2, label3;
+	private JLabel label1, label2, label3, label4, label5;
 	private	JComboBox<String> tempBox, achesBox, soreThroatBox;
-	private JPanel panel1, panel2, panel3, panel4;
+	private JPanel panel1, panel2, panel3, panel4, panel5, panel6;
 	private JButton submit_button, eval_button;
 	private String[] optionString = { "No", "Yes" }; // options for sore throat and aches
 	private String[] temperatureString = { "Hot", "Cool", "Normal" }; // options for temperature
@@ -32,20 +33,27 @@ public class GUI extends JFrame implements ActionListener
 		label1 = new JLabel("Temperature: ");
 		label2 = new JLabel("Aches: ");
 		label3 = new JLabel("Sore Throat: ");
+		label4 = new JLabel("TONSILTIS TESTER");
+		label5 = new JLabel("");
+		label5.setVisible(false);
+		label4.setFont(new Font("Comic Sans MS", Font.BOLD, 36));
+		label5.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
 		
 		// instantiate combo boxes
 		tempBox = new JComboBox<String>(temperatureString);
 		achesBox = new JComboBox<String>(optionString);
 		soreThroatBox = new JComboBox<String>(optionString);
-		tempBox.setPreferredSize(new Dimension(150, 50)); // set size of buttons
-		achesBox.setPreferredSize(new Dimension(150, 50));
-		soreThroatBox.setPreferredSize(new Dimension(150, 50));
+		tempBox.setPreferredSize(new Dimension(200, 50)); // set size of buttons
+		achesBox.setPreferredSize(new Dimension(240, 50));
+		soreThroatBox.setPreferredSize(new Dimension(210, 50));
 		
 		// instantiate panels
 		panel1 = new JPanel();
 		panel2 = new JPanel();
 		panel3 = new JPanel();
 		panel4 = new JPanel();
+		panel5 = new JPanel();
+		panel6 = new JPanel();
 		
 		// instantiate buttons
 		submit_button = new JButton("Submit");
@@ -69,16 +77,20 @@ public class GUI extends JFrame implements ActionListener
 		panel3.add(soreThroatBox);
 		panel4.add(submit_button);
 		panel4.add(eval_button);
+		panel5.add(label4);
+		panel6.add(label5);
+		add(panel5);
 		add(panel1);
 		add(panel2);
 		add(panel3);
 		add(panel4);
+		add(panel6);
 		
 		// set the screens layout
 		setLocation(400,100);
-		setSize(800, 600);
+		setSize(500, 600);
 		setVisible(true);
-		setLayout(new FlowLayout(FlowLayout.CENTER));
+		setLayout(new FlowLayout(FlowLayout.LEFT));
 	}
 	
 	// if button is pressed
@@ -98,17 +110,19 @@ public class GUI extends JFrame implements ActionListener
 			
 			// get the result of tonsilitis in the form of a string "Yes" or "No"
 			String result = nb.calculateTonsilitis();
-					
+
 			// show result
 			// if user has tonsilitis
 			if(result.equals("Yes"))
 			{
-				JOptionPane.showMessageDialog(this, "User likely has tonsilitis");
+				label5.setText("User likely has tonsilitis = "+nb.getPercentageYes()+"%");
+				label5.setVisible(true);
 			}
 			// if user doesnt have tonsilitis
 			else
 			{
-				JOptionPane.showMessageDialog(this, "User likely doesnt have tonsilitis");
+				label5.setText("User likely has no tonsilitis = "+nb.getPercentageNo()+"%");
+				label5.setVisible(true);
 			}
 			
 
@@ -123,7 +137,8 @@ public class GUI extends JFrame implements ActionListener
 			evaluationAccuracy = nb.getEvaluation();
 			
 			// Show the programs accuracy percentage
-			JOptionPane.showMessageDialog(this, "The program has an "+(evaluationAccuracy*100)+"% accuracy rate");
+			label5.setText("Accuracy rate (based on the evaluation)= "+(evaluationAccuracy*100)+"%");
+			label5.setVisible(true);
 		}
 	}
 
