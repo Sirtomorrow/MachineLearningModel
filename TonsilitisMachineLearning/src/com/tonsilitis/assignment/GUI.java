@@ -45,7 +45,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 		label2.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 		label3.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
 		label4.setFont(new Font("Comic Sans MS", Font.BOLD, 36));
-		label5.setFont(new Font("Calibri", Font.BOLD, 18));
+		label5.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
 		
 		// instantiate combo boxes
 		tempBox = new JComboBox<String>(temperatureString);
@@ -135,13 +135,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener
 			// if user has tonsilitis
 			if(result.equals("Yes"))
 			{
-				label5.setText("User likely has tonsilitis = "+nb.getPercentageYes()+"%");
+				label5.setText("Patient likely has tonsilitis = "+nb.getPercentageYes()+"%");
 				label5.setVisible(true);
 			}
 			// if user doesnt have tonsilitis
 			else
 			{
-				label5.setText("User likely has no tonsilitis = "+nb.getPercentageNo()+"%");
+				label5.setText("Patient likely has no tonsilitis = "+nb.getPercentageNo()+"%");
 				label5.setVisible(true);
 			}
 			
